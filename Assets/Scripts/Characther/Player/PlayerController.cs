@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
                     animator.SetFloat("Speed", 0.0f);
                     break;
             }
+            inputDir.y = -2;
         }
         else
         {
