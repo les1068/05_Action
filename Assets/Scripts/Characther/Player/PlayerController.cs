@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     CharacterController controller;
 
+    readonly int AttackHas = Animator.StringToHash("Attack");
+    readonly int SpeedHas = Animator.StringToHash("Speed");
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -97,9 +99,13 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
+        inputActions.Player.Attack.performed += OnAttack;
     }
+
+
     private void OnDisable()
     {
+        inputActions.Player.Attack.performed -= OnAttack;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
         inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Move.performed -= OnMove;
@@ -133,15 +139,15 @@ public class PlayerController : MonoBehaviour
             switch (Move_Mode) // MoveMode에 따라 애니메이션 변경
             {
                 case MoveMode.Walk:
-                    animator.SetFloat("Speed", 0.3f);
+                    animator.SetFloat(SpeedHas, 0.3f);
                     currentSpeed = walkSpeed;
                     break;
                 case MoveMode.Run:
-                    animator.SetFloat("Speed", 1.0f);
+                    animator.SetFloat(SpeedHas, 1.0f);
                     currentSpeed = runSpeed;
                     break;
                 default:
-                    animator.SetFloat("Speed", 0.0f);
+                    animator.SetFloat(SpeedHas, 0.0f);
                     break;
             }
             inputDir.y = -2;
@@ -149,7 +155,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // 이동입력이 끝났다.
-            animator.SetFloat("Speed", 0.0f);
+            animator.SetFloat(SpeedHas, 0.0f);
         }
     }
 
@@ -165,4 +171,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnAttack(InputAction.CallbackContext _)
+    {
+        //animator.ResetTrigger(AttackHas);
+        animator.SetTrigger(AttackHas);
+    }
 }
