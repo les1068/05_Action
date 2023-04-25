@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ItemCode
+{
+    Ruby = 0,
+    Emerald,
+    Sapphire
+}
+
 public class ItemDataManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public ItemData[] itemDatas = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public ItemData this[uint id] => itemDatas[id];
+
+    public ItemData this[ItemCode code] => itemDatas[(int)code];
+
+    public int length => itemDatas.Length;
 }
