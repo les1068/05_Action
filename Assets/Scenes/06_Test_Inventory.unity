@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: 677714252}
   - component: {fileID: 677714251}
   - component: {fileID: 677714253}
+  - component: {fileID: 677714254}
   m_Layer: 0
   m_Name: Test_Inventory
   m_TagString: Untagged
@@ -544,7 +545,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677714250}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e9597bae469d8348af7b5f0265e1bff, type: 3}
   m_Name: 
@@ -555,6 +556,24 @@ MonoBehaviour:
   to: 1
   sortBy: 2
   isAscending: 1
+--- !u!114 &677714254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da14d92c124dba94c99aa2379bd15c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invenSize: 6
+  inventoryUI: {fileID: 1893988411}
+  code: 0
+  index: 0
+  from: 0
+  to: 1
 --- !u!1 &738032783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1392,7 @@ GameObject:
   - component: {fileID: 1893988410}
   - component: {fileID: 1893988409}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: InventoryUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

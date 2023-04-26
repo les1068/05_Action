@@ -1,0 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class Test_InventoryUI : Test_Base
+{
+    public uint invenSize = Inventory.Default_Inventory_Size;
+    public InventoryUI inventoryUI;
+
+    public ItemCode code = ItemCode.Ruby;
+    public int index = 0;
+    public uint from = 0;
+    public uint to = 1;
+
+    Inventory inventory;
+
+    private void Start()
+    {
+        inventory = new Inventory(invenSize);
+        inventoryUI.InitializeInventory(inventory);
+    }
+
+    protected override void Test1(InputAction.CallbackContext _)
+    {
+        uint temp = (uint)Mathf.Clamp(index, 0, inventory.SlotCount);
+        inventory.AddItem(code, temp);
+        inventory.PrintInventory();
+    }
+
+    protected override void Test2(InputAction.CallbackContext _)
+    {
+        uint temp = (uint)Mathf.Clamp(index, 0, inventory.SlotCount);
+        inventory.RemoveItem(temp);
+        inventory.PrintInventory();
+    }
+
+    protected override void Test3(InputAction.CallbackContext _)
+    {
+        uint temp = (uint)Mathf.Clamp(index, 0, inventory.SlotCount);
+        inventory.ClearSlot(temp);
+        inventory.PrintInventory();
+    }
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        inventory.MoveItem(from, to);
+        inventory.PrintInventory();
+    }
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        inventory = new Inventory(invenSize);
+        inventoryUI.InitializeInventory(inventory);
+    }
+}
