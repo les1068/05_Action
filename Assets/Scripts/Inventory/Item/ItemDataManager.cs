@@ -8,6 +8,12 @@ public enum ItemCode
     Emerald,
     Sapphire
 }
+public enum ItemSortBy
+{
+    ID,      // ID 기준으로 정렬
+    Name,    // 이름 기준으로 정렬
+    Price    // 가격 기준으로 정렬
+}
 
 public class ItemDataManager : MonoBehaviour
 {

@@ -16,6 +16,6 @@ MonoBehaviour:
   itemName: "\uB8E8\uBE44"
   modelPrefab: {fileID: 0}
   itemIcon: {fileID: 21300000, guid: 70e92df91699f664ab5bad7bf4723022, type: 3}
-  price: 100
+  price: 500
   maxStackCount: 3
   itemDescription: "\uC124\uBA85"

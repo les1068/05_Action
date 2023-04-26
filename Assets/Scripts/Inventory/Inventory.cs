@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory
@@ -222,14 +223,16 @@ public class Inventory
         // 1.2 아이템이 다를 때
         // 2. from에만 아이템이 있을 때
 
-        if (IsValidIndex(from) && IsValidIndex(to))
+        // from 과 to가 같은 경우는 스킵
+        // from과 to 모두 valid해야 한다.
+        if ((from != to) && IsValidIndex(from) && IsValidIndex(to))
         {
             // temp슬롯을 감안해서 삼항연산자로 슬롯 구하기
             ItemSlot fromSlot = (from == TempSlotIndex) ? TempSlot : slots[from];
             if (!fromSlot.IsEmpty)  // from이 빈 경우는 처리 안함(실질적으로 사용안함)
             {
                 ItemSlot toSlot = (to == TempSlotIndex) ? TempSlot : slots[to];
-                if (fromSlot.ItemData == toSlot.ItemData) 
+                if (fromSlot.ItemData == toSlot.ItemData)
                 {
                     // from과 to가 같은 아이템인 경우. 아이템 합치기
                     toSlot.IncreaseSlotItem(out uint overCount, fromSlot.ItemCount);
@@ -250,10 +253,103 @@ public class Inventory
 
     }
 
-    //아이템 정렬
-    void SlotSorting()
+    /// <summary>
+    /// 아이템 정렬용 함수
+    /// </summary>
+    /// <param name="sortBy">정렬 기준</param>
+    /// <param name="isAscending">true면 오름차순, false면 내림차순</param>
+    public void SlotSorting(ItemSortBy sortBy, bool isAscending = true)
     {
+        // 정렬할 리스트 만들기
+        List<ItemSlot> sortSlots = new List<ItemSlot>(SlotCount);
+        foreach (var slot in slots)
+        {
+            sortSlots.Add(slot);
+        }
+        // 파라메터에서 설정한 기준에 따라 정렬
+        switch (sortBy)
+        {
+            case ItemSortBy.Name:
+                sortSlots.Sort((x, y) =>
+                {
+                    if (x.ItemData == null)
+                    {
+                        return 1;           // x가 null이면 x가 크다
+                    }
+                    if (y.ItemData == null)
+                    {
+                        return -1;          // y가 null이면 y가 크다
+                    }
+                    if (isAscending)
+                    {
+                        return x.ItemData.itemName.CompareTo(y.ItemData.itemName);
+                    }
+                    else
+                    {
+                        return y.ItemData.itemName.CompareTo(x.ItemData.itemName);
+                    }
+                });
+                break;
 
+            case ItemSortBy.Price:
+                sortSlots.Sort((x, y) =>
+                {
+                    if (x.ItemData == null)
+                    {
+                        return 1;
+                    }
+                    if (y.ItemData == null)
+                    {
+                        return -1;
+                    }
+                    if (isAscending)
+                    {
+                        return x.ItemData.price.CompareTo(y.ItemData.price);
+                    }
+                    else
+                    {
+                        return y.ItemData.price.CompareTo(x.ItemData.price);
+                    }
+                });
+                break;
+
+            case ItemSortBy.ID:
+            default:
+                sortSlots.Sort((x, y) =>
+                {
+                    if (x.ItemData == null)
+                    {
+                        return 1;
+                    }
+                    if (y.ItemData == null)
+                    {
+                        return -1;
+                    }
+                    if (isAscending)
+                    {
+                        return x.ItemData.id.CompareTo(y.ItemData.id);
+                    }
+                    else
+                    {
+                        return y.ItemData.id.CompareTo(x.ItemData.id);
+                    }
+                });
+                break;
+        }
+
+
+        // 정렬된 결과에 따라 슬롯 순서 조절하기
+        List<(ItemData, uint)> SortedData = new List<(ItemData, uint)>(SlotCount);
+        foreach (var slot in sortSlots)
+        {
+            SortedData.Add((slot.ItemData, slot.ItemCount));
+        }
+        int index = 0;
+        foreach (var data in SortedData)
+        {
+            slots[index].AssignSlotItem(data.Item1, data.Item2);
+            index++;
+        }
     }
 
     // 단순 확인 및 탐색용 함수들 -------------------------------------------------------------------
