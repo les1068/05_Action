@@ -282,11 +282,11 @@ public class Inventory
                     }
                     if (isAscending)
                     {
-                        return x.ItemData.itemName.CompareTo(y.ItemData.itemName);
+                        return x.ItemData.itemName.CompareTo(y.ItemData.itemName);  // 디폴트로 오름차순
                     }
                     else
                     {
-                        return y.ItemData.itemName.CompareTo(x.ItemData.itemName);
+                        return y.ItemData.itemName.CompareTo(x.ItemData.itemName);  // 내림차순으로 처리
                     }
                 });
                 break;
@@ -342,11 +342,12 @@ public class Inventory
         List<(ItemData, uint)> SortedData = new List<(ItemData, uint)>(SlotCount);
         foreach (var slot in sortSlots)
         {
-            SortedData.Add((slot.ItemData, slot.ItemCount));
+            SortedData.Add((slot.ItemData, slot.ItemCount));  // 아이템 데이터와 아이템 갯수를 정렬 순서에 맞춰서 리스트에 저장하기
         }
         int index = 0;
         foreach (var data in SortedData)
         {
+            // 저장해 놓은 데이터에 따라 슬롯에 아이템 설정    
             slots[index].AssignSlotItem(data.Item1, data.Item2);
             index++;
         }
