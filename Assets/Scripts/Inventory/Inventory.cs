@@ -54,7 +54,7 @@ public class Inventory
     {
         Debug.Log($"{size}칸짜리 인벤토리 생성");
         slots = new ItemSlot[size];             // 슬롯용 배열 만들기
-        for(uint i=0;i<size; i++)
+        for (uint i = 0; i < size; i++)
         {
             slots[i] = new ItemSlot(i);         // 슬롯 하나씩 생성
         }
@@ -74,7 +74,7 @@ public class Inventory
 
         // 같은 종류의 아이템이 있는지
         ItemSlot sameDataSlot = FindSameItem(data);
-        if(sameDataSlot != null)
+        if (sameDataSlot != null)
         {
             // 같은 종류의 아이템이 있으면 증가 시도
             result = sameDataSlot.IncreaseSlotItem(out uint _); // 넘치는 갯수는 의미없음. 결과만 사용
@@ -117,8 +117,8 @@ public class Inventory
     public bool AddItem(ItemData data, uint index)
     {
         bool result = false;
-                
-        if(IsValidIndex(index)) // 적절한 인덱스인지 확인
+
+        if (IsValidIndex(index)) // 적절한 인덱스인지 확인
         {
             ItemSlot slot = slots[index];  // index에 해당하는 슬롯 찾아오기
 
@@ -167,7 +167,7 @@ public class Inventory
     /// <param name="decreaseCount">감소시킬 갯수</param>
     public void RemoveItem(uint slotIndex, uint decreaseCount = 1)
     {
-        if(IsValidIndex(slotIndex))
+        if (IsValidIndex(slotIndex))
         {
             ItemSlot slot = slots[slotIndex];
             slot.DecreaseSlotItem(decreaseCount);
@@ -177,15 +177,15 @@ public class Inventory
             Debug.Log($"실패 : {slotIndex}는 잘못된 인덱스입니다.");
         }
     }
-    
-    
+
+
     /// <summary>
     /// 특정 슬롯에서 아이템을 완전히 제거하는 함수
     /// </summary>
     /// <param name="slotIndex">제거할 슬롯 인덱스</param>
     public void ClearSlot(uint slotIndex)
     {
-        if(IsValidIndex(slotIndex))
+        if (IsValidIndex(slotIndex))
         {
             ItemSlot slot = slots[slotIndex];
             slot.ClearSlotItem();
@@ -201,16 +201,53 @@ public class Inventory
     /// </summary>
     public void ClearInventory()
     {
-        foreach(var slot in slots)
+        foreach (var slot in slots)
         {
             slot.ClearSlotItem();
         }
     }
 
-    //아이템 이동 시키기 
+    /// <summary>
+    /// 아이템을 이동 시키는 함수
+    /// </summary>
+    /// <param name="from">시작 슬롯의 인덱스</param>
+    /// <param name="to">도착 슬롯의 인덱스</param>
     public void MoveItem(uint from, uint to)
     {
         // 발생할 수 있는 경우의 수
+
+        // 0. from과 to의 인덱스가 적합할 때
+        // 1. from과 to에 둘다 아이템이 있을 때
+        // 1.1 아이템이 같을 때
+        // 1.2 아이템이 다를 때
+        // 2. from에만 아이템이 있을 때
+
+        if (IsValidIndex(from) && IsValidIndex(to))
+        {
+            // temp슬롯을 감안해서 삼항연산자로 슬롯 구하기
+            ItemSlot fromSlot = (from == TempSlotIndex) ? TempSlot : slots[from];
+            if (!fromSlot.IsEmpty)  // from이 빈 경우는 처리 안함(실질적으로 사용안함)
+            {
+                ItemSlot toSlot = (to == TempSlotIndex) ? TempSlot : slots[to];
+                if (fromSlot.ItemData == toSlot.ItemData) 
+                {
+                    // from과 to가 같은 아이템인 경우. 아이템 합치기
+                    toSlot.IncreaseSlotItem(out uint overCount, fromSlot.ItemCount);
+                    fromSlot.DecreaseSlotItem(fromSlot.ItemCount - overCount);
+                    Debug.Log($"인벤토리의 {from}슬롯에서 {to}슬롯으로 아이템 합치기 성공");
+                }
+                else
+                {
+                    // from과 to가 다른 아이템인 경우. 서로 스왑하기
+                    ItemData tempData = fromSlot.ItemData;
+                    uint tempCount = fromSlot.ItemCount;
+                    fromSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount);
+                    toSlot.AssignSlotItem(tempData, tempCount);
+                    Debug.Log($"인벤토리의 {from}슬롯과 {to}슬롯 아이템 교체 성공");
+                }
+            }
+        }
+
     }
 
     //아이템 정렬
@@ -230,9 +267,9 @@ public class Inventory
     private ItemSlot FindEmptySlot()
     {
         ItemSlot result = null;
-        foreach(ItemSlot slot in slots) // 그냥 다 뒤져보기
+        foreach (ItemSlot slot in slots) // 다 뒤져보기
         {
-            if(slot.IsEmpty)
+            if (slot.IsEmpty)
             {
                 result = slot;
                 break;
@@ -252,7 +289,7 @@ public class Inventory
         foreach (ItemSlot slot in slots)    // 전부 찾기
         {
             // 같은 종류의 아이템 데이터고 슬롯에 빈용량이 있어야 한다.
-            if(slot.ItemData == data && slot.ItemCount < slot.ItemData.maxStackCount)
+            if (slot.ItemData == data && slot.ItemCount < slot.ItemData.maxStackCount)
             {
                 findSlot = slot;
                 break;
@@ -269,7 +306,7 @@ public class Inventory
         // 출력 예시 : [ 루비(1), 사파이어(1), 에메랄드(2), (빈칸), (빈칸), (빈칸) ]
         string printText = "[ ";
 
-        for(int i =0;i<SlotCount-1;i++)
+        for (int i = 0; i < SlotCount - 1; i++)
         {
             if (!slots[i].IsEmpty)
             {
@@ -283,7 +320,7 @@ public class Inventory
         }
 
         ItemSlot last = slots[SlotCount - 1];
-        if( !last.IsEmpty)
+        if (!last.IsEmpty)
         {
             printText += $"{last.ItemData.itemName}({last.ItemCount})";
         }

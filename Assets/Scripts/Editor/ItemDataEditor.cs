@@ -5,7 +5,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 
-// ItemData용 ㅓ스텀 에디터라는 의미, 두번째 파라메터가 ture면 자식 클래스도 같이 적용 받는다.
+// ItemData용 커스텀 에디터라는 의미, 두번째 파라메터가 ture면 자식 클래스도 같이 적용 받는다.
 [CustomEditor(typeof(ItemData), true)]
 public class ItemDataEditor : Editor
 {

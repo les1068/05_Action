@@ -19,7 +19,7 @@ public class ItemSlot
         get => slotItemData;
         private set     // 쓰기는 이 클래스만 가능
         {
-            if( slotItemData != value ) // 아이템 종류가 변경되었을 때만 대입
+            if (slotItemData != value) // 아이템 종류가 변경되었을 때만 대입
             {
                 slotItemData = value;
             }
@@ -39,7 +39,7 @@ public class ItemSlot
         get => itemCount;
         private set
         {
-            if( itemCount != value )
+            if (itemCount != value)
             {
                 itemCount = value;
             }
@@ -62,7 +62,7 @@ public class ItemSlot
     /// <param name="count">설정할 아이템 갯수</param>
     public void AssignSlotItem(ItemData data, uint count = 1)
     {
-        if( data !=  null )
+        if (data != null)
         {
             ItemData = data;    // data가 null이 아니면 파라메터로 설정
             ItemCount = count;
@@ -97,7 +97,7 @@ public class ItemSlot
         uint newCount = ItemCount + increaseCount;
         over = (int)newCount - (int)ItemData.maxStackCount;
 
-        if(over > 0)
+        if (over > 0)
         {
             // 넘친 경우에 대한 처리
             ItemCount = ItemData.maxStackCount;
@@ -129,7 +129,7 @@ public class ItemSlot
     {
         int newCount = (int)ItemCount - (int)decreaseCount; // 언더플로우 대비해서 int로 변경 후 빼기
 
-        if( newCount < 1 )
+        if (newCount < 1)
         {
             // 새 갯수가 0개 이하
             ClearSlotItem();
