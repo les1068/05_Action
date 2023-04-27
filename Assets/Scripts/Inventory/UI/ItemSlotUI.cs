@@ -59,7 +59,8 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, IEnd
             }
             else
             {
-                Debug.Log("슬롯이 아닙니다.");
+                onDragEnd?.Invoke(ID);
+                Debug.Log("슬롯이 아닙니다. 원래 슬롯으로 되돌립니다.");
             }
         }
         else
