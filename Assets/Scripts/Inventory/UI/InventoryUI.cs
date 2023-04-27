@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour
     Inventory inven;
 
     ItemSlotUI[] slotUIs;
-    //SlotUI tempSlotUI;
+    TempitemSlotUI tempSlotUI;
 
     PlayerInputActions inputActions;
     private void Awake()
@@ -19,7 +19,8 @@ public class InventoryUI : MonoBehaviour
         Transform slotParent = transform.GetChild(0);
         slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
 
-        //tempSlotUI
+        tempSlotUI = GetComponentInChildren<TempitemSlotUI>();
+
         inputActions = new PlayerInputActions();
     }
     private void OnEnable()
@@ -67,23 +68,54 @@ public class InventoryUI : MonoBehaviour
             }
         }
         // 슬롯의 초기화 작업
-        for(uint i=0; i < inven.SlotCount; i++)
+        for (uint i = 0; i < inven.SlotCount; i++)
         {
             slotUIs[i].InitializeSlot(i, inven[i]);
             slotUIs[i].onDragBegin += OnItemMoveBegin;
             slotUIs[i].onDragEnd += OnItemMoveEnd;
+            slotUIs[i].onClick += OnSlotClick;
         }
-            
-    }
-    uint temp = 0;
-    private void OnItemMoveBegin(uint slotID)
-    {
-        temp = slotID;
-    }
-    private void OnItemMoveEnd(uint slotID)
-    {
-        inven.MoveItem(temp,slotID);
+        // 임시 슬롯 초기화
+        tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot);  // 임시슬롯 초기화
+        tempSlotUI.Close();  // 시작하면 꺼놓기
     }
 
-    
+    /// <summary>
+    /// 마우스 드래그가 시작되었을 때 실행되는 함수
+    /// </summary>
+    /// <param name="slotID">드래그 시작 슬롯의 ID</param>
+    private void OnItemMoveBegin(uint slotID)
+    {
+        inven.MoveItem(slotID, tempSlotUI.ID);  // 시작 슬롯의 내용과 임시슬롯의 내용을 서로 교체시키기
+        tempSlotUI.Open();                      // 임시슬롯 보이게 만들기
+    }
+
+    /// <summary>
+    /// 마우스 드래그가 끝났을 때 실행되는 함수
+    /// </summary>
+    /// <param name="slotID">드래그가 끝난 슬롯의 ID</param>
+    private void OnItemMoveEnd(uint slotID)
+    {
+        inven.MoveItem(tempSlotUI.ID, slotID);  // 임시슬롯의 내용과 드래그가 끝난 슬롯의 내용을 교체시키기으로 옮기기
+        if (tempSlotUI.ItemSlot.IsEmpty)        // 교체 결과 임시 슬롯이 비게 되면
+        {
+            tempSlotUI.Close();                 // 임시 슬롯 비활성화해서 안보이게 만들기
+        }
+
+    }
+
+    /// <summary>
+    /// 슬롯을 클릭했을 때 실행되는 함수
+    /// </summary>
+    /// <param name="slotID">클릭된 슬롯의 ID</param>
+    private void OnSlotClick(uint slotID)
+    {
+        if (!tempSlotUI.ItemSlot.IsEmpty)
+        {
+            // 클릭되어 있지 않으면 드래그가 끝난 것과 같은 처리
+            // 임시슬롯과 클릭된슬롯의 내용을 서로 교체
+            OnItemMoveEnd(slotID);  
+        }
+    }
+
 }
