@@ -45,6 +45,7 @@ public class ItemSlot
             if (itemCount != value)
             {
                 itemCount = value;
+                onSlotItemChange?.Invoke();
             }
         }
     }

@@ -19,6 +19,14 @@ public class Test_InventoryUI : Test_Base
     {
         inventory = new Inventory(invenSize);
         inventoryUI.InitializeInventory(inventory);
+        inventory.AddItem(ItemCode.Ruby);
+        inventory.AddItem(ItemCode.Ruby);
+        inventory.AddItem(ItemCode.Ruby, 1);
+        inventory.AddItem(ItemCode.Emerald, 2);
+        inventory.AddItem(ItemCode.Emerald, 2);
+        inventory.AddItem(ItemCode.Emerald, 2);
+        inventory.AddItem(ItemCode.Sapphire, 5);
+        inventory.AddItem(ItemCode.Sapphire, 5);    
     }
 
     protected override void Test1(InputAction.CallbackContext _)

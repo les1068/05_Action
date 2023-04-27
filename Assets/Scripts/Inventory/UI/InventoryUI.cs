@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,14 @@ public class InventoryUI : MonoBehaviour
 
     Inventory inven;
 
-    ItemSlotUI_Base[] slotUIs;
+    ItemSlotUI[] slotUIs;
     //SlotUI tempSlotUI;
 
     PlayerInputActions inputActions;
     private void Awake()
     {
         Transform slotParent = transform.GetChild(0);
-        slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI_Base>();
+        slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
 
         //tempSlotUI
         inputActions = new PlayerInputActions();
@@ -57,19 +58,32 @@ public class InventoryUI : MonoBehaviour
             layout.cellSize = new Vector2(slotSideLength, slotSideLength);  // 구한 길이로 적용하기
 
             // 슬롯 새로 만들기
-            slotUIs = new ItemSlotUI_Base[inven.SlotCount];
+            slotUIs = new ItemSlotUI[inven.SlotCount];
             for (uint i = 0; i < inven.SlotCount; i++)
             {
                 GameObject obj = Instantiate(slotPrefab, slotParent);  // 생성하고
                 obj.name = $"{slotPrefab.name}_{i}";                   // 이름 붙이고
-                slotUIs[i] = obj.GetComponent<ItemSlotUI_Base>();           // 저장해 놓기
+                slotUIs[i] = obj.GetComponent<ItemSlotUI>();           // 저장해 놓기
             }
         }
         // 슬롯의 초기화 작업
         for(uint i=0; i < inven.SlotCount; i++)
         {
             slotUIs[i].InitializeSlot(i, inven[i]);
+            slotUIs[i].onDragBegin += OnItemMoveBegin;
+            slotUIs[i].onDragEnd += OnItemMoveEnd;
         }
             
     }
+    uint temp = 0;
+    private void OnItemMoveBegin(uint slotID)
+    {
+        temp = slotID;
+    }
+    private void OnItemMoveEnd(uint slotID)
+    {
+        inven.MoveItem(temp,slotID);
+    }
+
+    
 }

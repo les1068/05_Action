@@ -27,7 +27,7 @@ public class ItemSlotUI_Base : MonoBehaviour
     /// </summary>
     /// <param name="id">슬롯 인덱스. 슬롯 ID의 역할도 함</param>
     /// <param name="slot">이 UI가 보여줄 슬롯</param>
-    public void InitializeSlot(uint id, ItemSlot slot)
+    public virtual void InitializeSlot(uint id, ItemSlot slot)
     {
         //Debug.Log($"{id}슬롯 초기화");
         this.id = id;   // 값 성정
