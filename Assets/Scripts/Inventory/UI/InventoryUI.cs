@@ -9,14 +9,14 @@ public class InventoryUI : MonoBehaviour
 
     Inventory inven;
 
-    ItemSlotUI[] slotUIs;
+    ItemSlotUI_Base[] slotUIs;
     //SlotUI tempSlotUI;
 
     PlayerInputActions inputActions;
     private void Awake()
     {
         Transform slotParent = transform.GetChild(0);
-        slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
+        slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI_Base>();
 
         //tempSlotUI
         inputActions = new PlayerInputActions();
@@ -57,12 +57,12 @@ public class InventoryUI : MonoBehaviour
             layout.cellSize = new Vector2(slotSideLength, slotSideLength);  // 구한 길이로 적용하기
 
             // 슬롯 새로 만들기
-            slotUIs = new ItemSlotUI[inven.SlotCount];
+            slotUIs = new ItemSlotUI_Base[inven.SlotCount];
             for (uint i = 0; i < inven.SlotCount; i++)
             {
                 GameObject obj = Instantiate(slotPrefab, slotParent);  // 생성하고
                 obj.name = $"{slotPrefab.name}_{i}";                   // 이름 붙이고
-                slotUIs[i] = obj.GetComponent<ItemSlotUI>();           // 저장해 놓기
+                slotUIs[i] = obj.GetComponent<ItemSlotUI_Base>();           // 저장해 놓기
             }
         }
         // 슬롯의 초기화 작업
