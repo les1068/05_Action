@@ -30,7 +30,7 @@ public class ItemSlotUI_Base : MonoBehaviour
     public virtual void InitializeSlot(uint id, ItemSlot slot)
     {
         //Debug.Log($"{id}슬롯 초기화");
-        this.id = id;   // 값 성정
+        this.id = id;   // 값 성정     
         itemSlot = slot;
         itemSlot.onSlotItemChange = Refresh;  // 슬롯에 들어있는 아이템이 변경되었을 때 실행될 함수 등록
 

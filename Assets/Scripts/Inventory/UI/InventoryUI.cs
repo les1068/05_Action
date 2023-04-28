@@ -2,16 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    /// <summary>
+    /// 슬롯을 다시 만들때 필요한 프리팹
+    /// </summary>
     public GameObject slotPrefab;
 
+    /// <summary>
+    /// 이 UI가 보여줄 인벤토리
+    /// </summary>
     Inventory inven;
 
+    /// <summary>
+    /// 이 인벤토리 UI에 있는 모든 슬롯UI
+    /// </summary>
     ItemSlotUI[] slotUIs;
+
+    /// <summary>
+    /// 아이템 이동이나 분리할 때 사용할 임시 슬롯UI
+    /// </summary>
     TempitemSlotUI tempSlotUI;
+
+    /// <summary>
+    /// 아이템의 상세정보를 보여주는 창
+    /// </summary>
+    DetailWindow detail;
 
     PlayerInputActions inputActions;
     private void Awake()
@@ -20,6 +39,8 @@ public class InventoryUI : MonoBehaviour
         slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
 
         tempSlotUI = GetComponentInChildren<TempitemSlotUI>();
+
+        detail = GetComponentInChildren<DetailWindow>();
 
         inputActions = new PlayerInputActions();
     }
@@ -74,11 +95,18 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onDragBegin += OnItemMoveBegin;
             slotUIs[i].onDragEnd += OnItemMoveEnd;
             slotUIs[i].onClick += OnSlotClick;
+            slotUIs[i].onPointerEnter += OnItemDetailOn;
+            slotUIs[i].onPointerExit += OnItemDetailOff;
+            slotUIs[i].onPointerMove += OnSlotPointerMove;
         }
         // 임시 슬롯 초기화
         tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot);  // 임시슬롯 초기화
         tempSlotUI.Close();  // 시작하면 꺼놓기
+
+        // 상세정보창 닫아 놓기
+        detail.Close();
     }
+
 
     /// <summary>
     /// 마우스 드래그가 시작되었을 때 실행되는 함수
@@ -116,6 +144,33 @@ public class InventoryUI : MonoBehaviour
             // 임시슬롯과 클릭된슬롯의 내용을 서로 교체
             OnItemMoveEnd(slotID);  
         }
+    }
+
+    /// <summary>
+    /// 마우스 포인터가 슬롯에 들어갔을 때 그 슬롯의 아이템 정보를 상세히 보여주는 창 여는 함수
+    /// </summary>
+    /// <param name="slotID"></param>
+    private void OnItemDetailOn(uint slotID)
+    {
+        detail.Open(slotUIs[slotID].ItemSlot.ItemData);
+    }
+
+    /// <summary>
+    /// 마우스 포인터가 슬롯에서 나갔을 때 아이템 상세 정보창을 닫는 함수
+    /// </summary>
+    /// <param name="slotID"></param>
+    private void OnItemDetailOff(uint slotID)
+    {
+        detail.Close();
+    }
+
+    /// <summary>
+    /// 마우스가 슬롯안에서 움직일 때 실행되는 함수
+    /// </summary>
+    /// <param name="screenPos">마우스 커서의 스크린 좌표</param>
+    private void OnSlotPointerMove(Vector2 screenPos)
+    {
+        detail.MovePosition(screenPos);
     }
 
 }
