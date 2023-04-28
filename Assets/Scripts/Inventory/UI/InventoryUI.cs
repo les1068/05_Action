@@ -101,6 +101,7 @@ public class InventoryUI : MonoBehaviour
         }
         // 임시 슬롯 초기화
         tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot);  // 임시슬롯 초기화
+        tempSlotUI.onTempSlotOpenClose += OnDetailPause;
         tempSlotUI.Close();  // 시작하면 꺼놓기
 
         // 상세정보창 닫아 놓기
@@ -122,14 +123,18 @@ public class InventoryUI : MonoBehaviour
     /// 마우스 드래그가 끝났을 때 실행되는 함수
     /// </summary>
     /// <param name="slotID">드래그가 끝난 슬롯의 ID</param>
-    private void OnItemMoveEnd(uint slotID)
+    /// <param name="isSuccess">드래그가 성공적으로 끝났으면 true, 취소되었으면 false</param>
+    private void OnItemMoveEnd(uint slotID, bool isSuccess)
     {
         inven.MoveItem(tempSlotUI.ID, slotID);  // 임시슬롯의 내용과 드래그가 끝난 슬롯의 내용을 교체시키기으로 옮기기
         if (tempSlotUI.ItemSlot.IsEmpty)        // 교체 결과 임시 슬롯이 비게 되면
         {
             tempSlotUI.Close();                 // 임시 슬롯 비활성화해서 안보이게 만들기
         }
-
+        if (isSuccess)
+        {
+            detail.Open(inven[slotID].ItemData);// 드래그가 성공적으로 끝나면 상세정보창 보여주기
+        }
     }
 
     /// <summary>
@@ -142,7 +147,7 @@ public class InventoryUI : MonoBehaviour
         {
             // 클릭되어 있지 않으면 드래그가 끝난 것과 같은 처리
             // 임시슬롯과 클릭된슬롯의 내용을 서로 교체
-            OnItemMoveEnd(slotID);  
+            OnItemMoveEnd(slotID, true);
         }
     }
 
@@ -171,6 +176,15 @@ public class InventoryUI : MonoBehaviour
     private void OnSlotPointerMove(Vector2 screenPos)
     {
         detail.MovePosition(screenPos);
+    }
+
+    /// <summary>
+    /// 디테일창이 일시정지 될지 말지를 결정하는 함수 (임시 슬롯이 열릴때 일시정지함)
+    /// </summary>
+    /// <param name="isPause">true면 일시정지, false면 일시정지 해제</param>
+    private void OnDetailPause(bool isPause)
+    {
+        detail.IsPause = isPause;
     }
 
 }

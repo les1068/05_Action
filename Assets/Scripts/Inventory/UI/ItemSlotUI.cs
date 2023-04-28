@@ -14,7 +14,7 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, IEnd
     /// <summary>
     /// 드래그 종료를 알리는 델리게이트
     /// </summary>
-    public Action<uint> onDragEnd;
+    public Action<uint, bool> onDragEnd;
     /// <summary>
     /// 슬롯이 클릭되었을 때 실행되는 델리게이트
     /// </summary>
@@ -75,12 +75,12 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, IEnd
             if (endSlot != null)  // 슬롯인지 확인
             {
                 // 슬롯이면 델리게이트로 이 슬롯에서 드래그가 끝났음을 알림
-                onDragEnd?.Invoke(endSlot.ID);
+                onDragEnd?.Invoke(endSlot.ID, true);
                 Debug.Log($"드래그 종료: {endSlot.ID}번 슬롯");
             }
             else
             {
-                onDragEnd?.Invoke(ID);
+                onDragEnd?.Invoke(ID, false);
                 Debug.Log("슬롯이 아닙니다. 원래 슬롯으로 되돌립니다.");
             }
         }
