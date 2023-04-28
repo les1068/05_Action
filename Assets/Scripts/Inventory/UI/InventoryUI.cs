@@ -32,6 +32,11 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     DetailWindow detail;
 
+    /// <summary>
+    /// 슬롯에 들어있는 아이템을 분리하는 창
+    /// </summary>
+    ItemSpliterUI spliter;
+
     PlayerInputActions inputActions;
     private void Awake()
     {
@@ -41,6 +46,8 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI = GetComponentInChildren<TempitemSlotUI>();
 
         detail = GetComponentInChildren<DetailWindow>();
+
+        spliter = GetComponentInChildren<ItemSpliterUI>();
 
         inputActions = new PlayerInputActions();
     }
@@ -187,4 +194,12 @@ public class InventoryUI : MonoBehaviour
         detail.IsPause = isPause;
     }
 
+    /// <summary>
+    /// 테스트 용도
+    /// </summary>
+    /// <param name="id"></param>
+    public void TestInventory_Spliter(uint id)
+    {
+        spliter.Open(inven[id]);
+    }
 }

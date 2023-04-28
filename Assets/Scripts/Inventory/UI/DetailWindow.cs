@@ -97,7 +97,6 @@ public class DetailWindow : MonoBehaviour
             diffX = Mathf.Max(0, diffX);    // 넘친부분만큼만 왼쪽으로 보내기
             screenPos.x -= diffX;           // 화면을 안벗어나게만 만들기
 
-
             /*if (screenPos.x + rect.sizeDelta.x > Screen.width) // 가로로 벗어난 경우
             {
                 screenPos.x -= rect.sizeDelta.x;               // 디테일창 가로 크기만큼 왼쪽으로 보내기
