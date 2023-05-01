@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   itemName: "\uC0AC\uD30C\uC774\uC5B4"
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 1499516336626709485, guid: 83aa4b22b134cfa469a370781b8a26a4,
+    type: 3}
   itemIcon: {fileID: 21300000, guid: 3c9805506cdde8f44889fc034ab0097e, type: 3}
   price: 300
   maxStackCount: 3
