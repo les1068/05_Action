@@ -9,7 +9,7 @@ public class Test_Inventory2 : Test_Base
     public int index = 0;
     public uint from = 0;
     public uint to = 1;
-    public ItemSortBy sortBy = ItemSortBy.ID;
+    public ItemSortBy sortBy = ItemSortBy.Code;
     public bool isAscending = true;
 
     Inventory inventory;

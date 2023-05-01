@@ -328,7 +328,7 @@ public class Inventory
                 });
                 break;
 
-            case ItemSortBy.ID:
+            case ItemSortBy.Code:
             default:
                 sortSlots.Sort((x, y) =>
                 {
@@ -342,11 +342,11 @@ public class Inventory
                     }
                     if (isAscending)
                     {
-                        return x.ItemData.id.CompareTo(y.ItemData.id);
+                        return x.ItemData.code.CompareTo(y.ItemData.code);
                     }
                     else
                     {
-                        return y.ItemData.id.CompareTo(x.ItemData.id);
+                        return y.ItemData.code.CompareTo(x.ItemData.code);
                     }
                 });
                 break;

@@ -5,20 +5,19 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory_ItemDrop : Test_Base
 {
+    public int count = 3;
     protected override void Test1(InputAction.CallbackContext _)
     {
-        GameObject obj = ItemFactory.MakeItem(ItemCode.Ruby);
-        obj.transform.position = Vector3.right * 1;
+        ItemFactory.MakeItem(ItemCode.Ruby, count, Vector3.right * 1, true);
     }
     protected override void Test2(InputAction.CallbackContext _)
     {
-        GameObject obj = ItemFactory.MakeItem(ItemCode.Emerald);
-        obj.transform.position = Vector3.right * 2;
+        ItemFactory.MakeItem(ItemCode.Emerald, count, Vector3.right * 2, true);
+
     }
     protected override void Test3(InputAction.CallbackContext _)
     {
-        GameObject obj = ItemFactory.MakeItem(ItemCode.Sapphire);
-        obj.transform.position = Vector3.right * 3;
+        ItemFactory.MakeItem(ItemCode.Sapphire, count, Vector3.right * 3, true);
     }
 
 }

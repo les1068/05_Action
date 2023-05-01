@@ -35,7 +35,16 @@ public class ItemFactory
     public static GameObject MakeItem(ItemCode itemCode, Vector3 pos, bool randomNoise = false)
     {
         // 랜덤성 정도는 x가 -0.5~0.5, z가 -0.5~0.5 정도씩 오차가 생김
-        return null;
+        GameObject obj = MakeItem(itemCode);
+        if (randomNoise)
+        {
+            Vector2 noise = Random.insideUnitCircle * 0.5f;
+            pos.x += noise.x;
+            pos.z += noise.y;
+        }
+        obj.transform.position = pos;
+
+        return obj;
     }
 
     /// <summary>
@@ -46,7 +55,13 @@ public class ItemFactory
     /// <returns>생성된 아이템들</returns>
     public static GameObject[] MakeItem(ItemCode itemCode, int count)
     {
-        return null;
+        GameObject[] objs = new GameObject[count];
+        for (int i = 0; i < count; i++)
+        {
+            objs[i] = MakeItem(itemCode);
+        }
+
+        return objs;
     }
 
     /// <summary>
@@ -59,7 +74,12 @@ public class ItemFactory
     /// <returns>생성된 아이템들</returns>
     public static GameObject[] MakeItem(ItemCode itemCode, int count, Vector3 pos, bool randomNoise = false)
     {
-        // 랜덤성 정도는 x가 -0.5~0.5, z가 -0.5~0.5 정도씩 오차가 생김
-        return null;
+        GameObject[] objs = new GameObject[count];
+        for (int i = 0; i < count; i++)
+        {
+            objs[i] = MakeItem(itemCode, pos, randomNoise);
+        }
+
+        return objs;
     }
 }
