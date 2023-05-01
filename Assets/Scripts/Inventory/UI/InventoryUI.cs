@@ -60,17 +60,19 @@ public class InventoryUI : MonoBehaviour
         inputActions.UI.Enable();
         inputActions.UI.Shift.performed += OnShiftPress;
         inputActions.UI.Shift.canceled += OnShiftPress;
+        inputActions.UI.Click.canceled += OnItemDrop;
     }
 
 
     private void OnDisable()
     {
+        inputActions.UI.Click.canceled -= OnItemDrop;
         inputActions.UI.Shift.canceled -= OnShiftPress;
         inputActions.UI.Shift.performed -= OnShiftPress;
         inputActions.UI.Disable();
     }
 
-    
+
     /// <summary>
     /// 인벤토리 UI 초기화
     /// </summary>
@@ -242,7 +244,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="count">덜어낼 아이템 갯수</param>
     private void OnSplitOK(uint slotID, uint count)
     {
-        inven.SplitItem(slotID,count);
+        inven.SplitItem(slotID, count);
         tempSlotUI.Open();
     }
 
@@ -255,7 +257,34 @@ public class InventoryUI : MonoBehaviour
         isShiftPress = !context.canceled;
     }
 
+    /// <summary>
+    /// 임시 슬롯이 들고 있는 아이템을 드랍 시도하는 함수
+    /// </summary>
+    /// <param name="_"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    private void OnItemDrop(InputAction.CallbackContext _)
+    {
+        Vector2 screenPos = Mouse.current.position.ReadValue();  // 마우스 커서 위치 가져오기
+        if (!IsInInventoryArea(screenPos))  
+        {
+            // 인벤토리 영역 밖이면
+            tempSlotUI.OnDrop(screenPos);  // 아이템 드랍 시도
+        }
+    }
 
+    /// <summary>
+    /// screenPos가 인벤토리UI 안인지 밖인지 확인하는 함수
+    /// </summary>
+    /// <param name="screenPos">확인할 스크린 좌표</param>
+    /// <returns>true면 인벤토리 안쪽, false면 인벤토리 밖</returns>
+    private bool IsInInventoryArea(Vector2 screenPos)
+    {
+        RectTransform rect = (RectTransform)transform;
+        Vector2 min = new(rect.position.x - rect.sizeDelta.x, rect.position.y);  // 사각형의 왼쪽 아래 
+        Vector2 max = new(rect.position.x, rect.position.y + rect.sizeDelta.y);  // 사각형의 오른쪽 위
+
+        return min.x < screenPos.x && screenPos.x < max.x && min.y < screenPos.y && screenPos.y < max.y;
+    }
     /// <summary>
     /// 테스트 용도
     /// </summary>
