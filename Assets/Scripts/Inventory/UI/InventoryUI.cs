@@ -48,6 +48,7 @@ public class InventoryUI : MonoBehaviour
         detail = GetComponentInChildren<DetailWindow>();
 
         spliter = GetComponentInChildren<ItemSpliterUI>();
+        spliter.onOKClick += OnSplitOK;
 
         inputActions = new PlayerInputActions();
     }
@@ -192,6 +193,17 @@ public class InventoryUI : MonoBehaviour
     private void OnDetailPause(bool isPause)
     {
         detail.IsPause = isPause;
+    }
+
+    /// <summary>
+    /// 아이템 분리창에서 ok버튼이 눌러졌을 때 실행되는 함수
+    /// </summary>
+    /// <param name="slotID">아이템을 분리할 슬롯의 아이디</param>
+    /// <param name="count">덜어낼 아이템 갯수</param>
+    private void OnSplitOK(uint slotID, uint count)
+    {
+        inven.SplitItem(slotID,count);
+        tempSlotUI.Open();
     }
 
     /// <summary>

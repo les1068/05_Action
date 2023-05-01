@@ -254,6 +254,21 @@ public class Inventory
     }
 
     /// <summary>
+    /// 특정 슬롯에서 아이템을 분리해 Temp슬롯으로 옮기는 함수
+    /// </summary>
+    /// <param name="slotID">분리할 슬롯</param>
+    /// <param name="count">분리할 갯수</param>
+    public void SplitItem(uint slotID, uint count)
+    {
+        if (IsValidIndex(slotID))
+        {
+            ItemSlot fromSlot = slots[slotID];
+            fromSlot.DecreaseSlotItem(count);
+            TempSlot.AssignSlotItem(fromSlot.ItemData, count);
+        }
+    }
+
+    /// <summary>
     /// 아이템 정렬용 함수
     /// </summary>
     /// <param name="sortBy">정렬 기준</param>
@@ -355,7 +370,7 @@ public class Inventory
 
     // 단순 확인 및 탐색용 함수들 -------------------------------------------------------------------
 
-    private bool IsValidIndex(uint index) => (index < SlotCount) || (index == TempSlotIndex);
+    public bool IsValidIndex(uint index) => (index < SlotCount) || (index == TempSlotIndex);
 
     /// <summary>
     /// 비어있는 슬롯을 찾아주는 함수

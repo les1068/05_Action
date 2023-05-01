@@ -54,7 +54,7 @@ public class ItemSpliterUI : MonoBehaviour
     /// OK버튼을 눌렀을 때 실행되는 함수
     /// 파라메터(슬롯의 인덱스, 나눌 갯수)
     /// </summary>
-    public Action<uint, int> onOKClick;
+    public Action<uint, uint> onOKClick;
 
     private void Awake()
     {
@@ -95,12 +95,17 @@ public class ItemSpliterUI : MonoBehaviour
         // OK 버튼
         child = transform.GetChild(5);
         Button ok = child.GetComponent<Button>();
-        ok.onClick.AddListener(() => Debug.Log($"{ItemSpliteCount}만큼 나눈다"));
+        ok.onClick.AddListener(() =>
+        {
+            // targetSlot.Index 슬롯에서 itemSplitCount만큼 덜어내라고 알림
+            onOKClick?.Invoke(targetSlot.Index, ItemSpliteCount);
+            Close();
+        });
 
         // Cancle버튼
         child = transform.GetChild(6);
         Button cancel = child.GetComponent<Button>();
-        cancel.onClick.AddListener(() => Debug.Log("최소"));
+        cancel.onClick.AddListener(() => Close());
 
         // 1. awake에서 필요한 컴포넌트 찾기
         // 2. 인풋필드와 슬라이더를 연동시키기(하나가 바뀌면 다른 하나도 같이 변경되어야 한다.)
@@ -124,5 +129,12 @@ public class ItemSpliterUI : MonoBehaviour
             gameObject.SetActive(true);          // 보여주기
 
         }
+    }
+    /// <summary>
+    /// 아이템 분리창을 닫는 함수
+    /// </summary>
+    public void Close()
+    {
+        gameObject.SetActive(false);
     }
 }
