@@ -39,7 +39,7 @@ public class Test_InventoryUI : Test_Base
         inventory.AddItem(ItemCode.Sapphire, 5);
         inventory.AddItem(ItemCode.Sapphire, 5);
 
-        inventoryUI.TestInventory_Spliter(2);
+        //inventoryUI.TestInventory_Spliter(2);
     }
 
     protected override void Test1(InputAction.CallbackContext _)
