@@ -18,6 +18,8 @@ public class ItemFactory
     {
         ItemData itemData = GameManager.Inst.ItemData[itemCode];
         GameObject obj = GameObject.Instantiate(itemData.modelPrefab);  // 아이템 데이터에 들어있는 프리팹 생성
+        Item item = obj.GetComponent<Item>();
+        item.ItemData = itemData;                     // 아이템 데이터 넣기
 
         string[] itemName = itemData.name.Split('_'); // 아이템 데이터의 이름을 _기준으로 분리하기
         obj.name = $"{itemName[1]}_{itemCount++}";    // 구분을 위해 유니크한 이름 설정

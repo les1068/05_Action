@@ -56,25 +56,26 @@ public class TempitemSlotUI : ItemSlotUI_Base
     /// <param name="screenPos">마우스 커서의 스크린 좌표</param>
     public void OnDrop(Vector2 screenPos)
     {
-        if (!ItemSlot.IsEmpty)
+        if (!ItemSlot.IsEmpty)  // 슬롯에 아이템이 있을 때만 드랍
         {
             Debug.Log($"아이템 드랍 : {ItemSlot.ItemData.itemName},{ItemSlot.ItemCount}");
 
             Ray ray = Camera.main.ScreenPointToRay(screenPos);
             if (Physics.Raycast(ray, out RaycastHit hit, 1000.0f, LayerMask.GetMask("Ground")))
             {
-                Vector3 dropPos = hit.point;
+                Vector3 dropPos = hit.point;  // 피킹 지점 구하기
+                Vector3 dropDir = hit.point - owner.transform.position; // 플레이어 위치에서 피킹 지점으로 가는 방향 구하기 
+                if (dropDir.sqrMagnitude > owner.ItemPickupRange * owner.ItemPickupRange) 
+                {
+                    // 아이템 획득 반경보다 먼곳에 드랍하면
+                    // 아이템 획득 반경 지점에 드랍
+                    dropPos = owner.transform.position + dropDir.normalized * owner.ItemPickupRange;
+                }
 
-
-                // 플레이어(owner) 주변에 아이템 드랍하기
-                // 1. 드랍한 위치가 플레이어 위치에서 ItemPickupRange보다 가까우면 해당 위치에 드랍
-
-
-                // 2. 드랍한 위치가 플레이어 위치에서 ItemPickupRange보다 멀면 방향은 유지하지만 거리는 ItemPickupRange보다로 설정
-
+                // 아이템 생성
                 ItemFactory.MakeItem(ItemSlot.ItemData.code, ItemSlot.ItemCount, dropPos, true);
-                ItemSlot.ClearSlotItem();
-                Close();
+                ItemSlot.ClearSlotItem();  // 슬롯 비우고
+                Close();                   // 임시 슬롯 닫기
             }
         }
     }
