@@ -48,10 +48,17 @@ public class Inventory
     ItemDataManager dataManager;
 
     /// <summary>
+    /// 이 인벤토리를 가지고 있는 플레이어 
+    /// </summary>
+    Player owner;
+    public Player Owner => owner;
+    
+
+    /// <summary>
     /// 생성자
     /// </summary>
     /// <param name="size">새로 만들 인벤토리의 크기</param>
-    public Inventory(uint size = Default_Inventory_Size)
+    public Inventory(Player owner, uint size = Default_Inventory_Size)
     {
         Debug.Log($"{size}칸짜리 인벤토리 생성");
         slots = new ItemSlot[size];             // 슬롯용 배열 만들기
@@ -62,6 +69,8 @@ public class Inventory
         tempSlot = new ItemSlot(TempSlotIndex); // 임시 슬롯 만들고
 
         dataManager = GameManager.Inst.ItemData;// 데이터 메니저 캐싱해놓기
+
+        this.owner = owner;
     }
 
     /// <summary>

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Test_Inventory_ItemDrop : Test_Base
 {
-    public int count = 3;
+    public uint count = 3;
     protected override void Test1(InputAction.CallbackContext _)
     {
         ItemFactory.MakeItem(ItemCode.Ruby, count, Vector3.right * 1, true);

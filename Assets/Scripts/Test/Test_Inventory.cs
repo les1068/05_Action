@@ -14,7 +14,7 @@ public class Test_Inventory : Test_Base
 
     private void Start()
     {
-        inventory = new Inventory(6);
+        inventory = new Inventory(null,6);
         inventory.AddItem(ItemCode.Ruby);
         inventory.AddItem(ItemCode.Ruby);
         inventory.AddItem(ItemCode.Ruby,1);

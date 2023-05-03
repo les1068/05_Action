@@ -11,7 +11,7 @@ public class Test_Inventory_UI_ItemDrop : Test_Base
 
     private void Start()
     {
-        inventory = new Inventory(invenSize);
+        inventory = new Inventory(null, invenSize);
         inventoryUI.InitializeInventory(inventory);
         inventory.AddItem(ItemCode.Ruby);
         inventory.AddItem(ItemCode.Ruby);

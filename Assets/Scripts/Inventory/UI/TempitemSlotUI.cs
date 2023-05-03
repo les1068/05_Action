@@ -7,6 +7,11 @@ using UnityEngine.InputSystem;
 public class TempitemSlotUI : ItemSlotUI_Base
 {
     /// <summary>
+    /// 이 인벤토리를 가지고 있는 오너
+    /// </summary>
+    Player owner;
+
+    /// <summary>
     /// 임시 슬롯이 열리거나 닫힐 때 실행되는 델리게이트. (true면 열렸다. false면 닫혔다.)
     /// </summary>
     public Action<bool> onTempSlotOpenClose;
@@ -22,6 +27,8 @@ public class TempitemSlotUI : ItemSlotUI_Base
         onTempSlotOpenClose = null;
 
         base.InitializeSlot(id, slot);
+
+        owner = GameManager.Inst.InvenUI.Owner;
     }
 
     /// <summary>
@@ -52,6 +59,23 @@ public class TempitemSlotUI : ItemSlotUI_Base
         if (!ItemSlot.IsEmpty)
         {
             Debug.Log($"아이템 드랍 : {ItemSlot.ItemData.itemName},{ItemSlot.ItemCount}");
+
+            Ray ray = Camera.main.ScreenPointToRay(screenPos);
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000.0f, LayerMask.GetMask("Ground")))
+            {
+                Vector3 dropPos = hit.point;
+
+
+                // 플레이어(owner) 주변에 아이템 드랍하기
+                // 1. 드랍한 위치가 플레이어 위치에서 ItemPickupRange보다 가까우면 해당 위치에 드랍
+
+
+                // 2. 드랍한 위치가 플레이어 위치에서 ItemPickupRange보다 멀면 방향은 유지하지만 거리는 ItemPickupRange보다로 설정
+
+                ItemFactory.MakeItem(ItemSlot.ItemData.code, ItemSlot.ItemCount, dropPos, true);
+                ItemSlot.ClearSlotItem();
+                Close();
+            }
         }
     }
 }

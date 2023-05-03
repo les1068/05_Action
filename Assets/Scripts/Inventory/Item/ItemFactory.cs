@@ -41,6 +41,7 @@ public class ItemFactory
             Vector2 noise = Random.insideUnitCircle * 0.5f;
             pos.x += noise.x;
             pos.z += noise.y;
+            obj.transform.Rotate(0, Random.Range(0.0f, 360.0f), 0);  // 시작 각도 다르게 만들기
         }
         obj.transform.position = pos;
 
@@ -53,7 +54,7 @@ public class ItemFactory
     /// <param name="itemCode">생성할 아이템 종류</param>
     /// <param name="count">생성할 아이템의 갯수</param>
     /// <returns>생성된 아이템들</returns>
-    public static GameObject[] MakeItem(ItemCode itemCode, int count)
+    public static GameObject[] MakeItem(ItemCode itemCode, uint count)
     {
         GameObject[] objs = new GameObject[count];
         for (int i = 0; i < count; i++)
@@ -72,7 +73,7 @@ public class ItemFactory
     /// <param name="pos">생성할 위치</param>
     /// <param name="randomNoise">생성될 위치에 랜덤성 추가 여부. true면 약간의 랜덤성을 더한다.</param>
     /// <returns>생성된 아이템들</returns>
-    public static GameObject[] MakeItem(ItemCode itemCode, int count, Vector3 pos, bool randomNoise = false)
+    public static GameObject[] MakeItem(ItemCode itemCode, uint count, Vector3 pos, bool randomNoise = false)
     {
         GameObject[] objs = new GameObject[count];
         for (int i = 0; i < count; i++)

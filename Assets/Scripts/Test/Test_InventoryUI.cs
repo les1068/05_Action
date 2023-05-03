@@ -17,7 +17,7 @@ public class Test_InventoryUI : Test_Base
 
     private void Start()
     {
-        inventory = new Inventory(invenSize);
+        inventory = new Inventory(null,invenSize);
         inventoryUI.InitializeInventory(inventory);
         inventory.AddItem(ItemCode.Ruby);
         inventory.AddItem(ItemCode.Ruby);
@@ -69,7 +69,7 @@ public class Test_InventoryUI : Test_Base
     }
     protected override void Test5(InputAction.CallbackContext _)
     {
-        inventory = new Inventory(invenSize);
+        inventory = new Inventory(null,invenSize);
         inventoryUI.InitializeInventory(inventory);
     }
 }
