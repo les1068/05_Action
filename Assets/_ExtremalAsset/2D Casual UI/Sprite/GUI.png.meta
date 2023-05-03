@@ -786,7 +786,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: _MoneyyBackground
+      name: _MoneyBackground
       rect:
         serializedVersion: 2
         x: 2599
@@ -1644,15 +1644,16 @@ TextureImporter:
       GUI_31: 21300062
       GUI_7: 21300014
       GUI_8: 21300016
-      _Arrow: 21300000
+      GUI_60: 21300106
       GUI_28: 21300010
       GUI_5: 21300066
       _SlotBackground: 21300090
       GUI_0: 21300108
       GUI_61: 21300074
-      GUI_60: 21300106
+      _Arrow: 21300000
       GUI_42: 21300068
       GUI_34: 21300064
+      _MoneyBackground: 21300046
       GUI_32: 21300038
       GUI_19: 21300120
       GUI_53: 21300058
@@ -1672,7 +1673,6 @@ TextureImporter:
       GUI_46: 21300086
       GUI_48: 21300116
       GUI_65: 21300046
-      _MoneyyBackground: 21300050
       GUI_25: 21300042
       _Gold: 21300036
       GUI_18: 21300114
