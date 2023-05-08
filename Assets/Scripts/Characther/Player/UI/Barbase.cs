@@ -39,4 +39,10 @@ public class Barbase : MonoBehaviour
         Color bgcolor = new Color(color.r, color.g, color.b, color.a * 0.5f);
         bgimage.color = bgcolor;
     }
+    protected void OnValueChange(float ratio)
+    {
+        ratio = Mathf.Clamp01(ratio);               // ratio의 범위를 0~1 사이로
+        slider.value = ratio;                       // 슬라이더 설정
+        current.text = $"{(ratio * maxValue):f0}";  // 텍스트 변경
+    }
 }

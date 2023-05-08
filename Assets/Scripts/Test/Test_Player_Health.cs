@@ -20,4 +20,17 @@ public class Test_Player_Health : Test_Base
     {
         player.HP -= 10;
     }
+    protected override void Test3(InputAction.CallbackContext _)
+    {
+        player.MP += 10;
+    }
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        player.MP -= 10;
+    }
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        player.ManaRegenerate(30, 3);
+    }
+
 }
