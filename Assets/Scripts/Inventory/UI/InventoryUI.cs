@@ -39,8 +39,13 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     ItemSpliterUI spliter;
 
-    PlayerInputActions inputActions;
+    /// <summary>
+    /// Owner가 가지고 있는 돈을 표시하는 창
+    /// </summary>
+    MoneyPanel money;
 
+
+    PlayerInputActions inputActions;
     bool isShiftPress = false;
     private void Awake()
     {
@@ -53,6 +58,8 @@ public class InventoryUI : MonoBehaviour
 
         spliter = GetComponentInChildren<ItemSpliterUI>();
         spliter.onOKClick += OnSplitOK;
+
+        money = GetComponentInChildren<MoneyPanel>();
 
         inputActions = new PlayerInputActions();
     }
@@ -130,6 +137,10 @@ public class InventoryUI : MonoBehaviour
 
         // 분리창 닫기
         spliter.Close();
+
+        // 오너의 돈이 변경될 때 머니 패널의 Refresh함수 실행하도록 함수 등록
+        Owner.onMoneyChange += money.Refresh;
+        money.Refresh(Owner.Money);     // 첫번째는 강제 리프레시
     }
 
 

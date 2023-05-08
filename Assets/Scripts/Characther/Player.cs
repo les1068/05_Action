@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHealth
 {
     /// <summary>
     /// 이 플레이어가 가지고 있을 인벤토리
@@ -30,6 +30,51 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 생존 여부 표시용 변수
+    /// </summary>
+    bool isAlive = true;
+    public bool IsAlive => isAlive;
+
+    /// <summary>
+    /// 플레이어의 현재 HP
+    /// </summary>
+    float hp = 100.0f;
+    public float HP
+    {
+        get => hp;
+        set
+        {
+            hp = value;
+            if(hp <0)
+            {
+                Die();
+            }
+            hp = Mathf.Clamp(hp, 0, maxHP);
+            onHealthChange?.Invoke(hp / MaxHP);
+        }
+    }
+    /// <summary>
+    /// HP가 변경되었을 때 실행될 델리게이트
+    /// </summary>
+    public Action<float> onHealthChange { get; set; }
+
+    /// <summary>
+    /// 플레이어가 죽었을 때 실행될 델리게이트
+    /// </summary>
+    public Action onDie { get; set; }
+
+    /// <summary>
+    /// 플레이어의 최대 HP
+    /// </summary>
+    float maxHP = 100.0f;
+
+    public float MaxHP => maxHP;
+
+    /// <summary>
+    /// 돈이 변경되었을 때 실행될 델리게이트
+    /// </summary>
     public Action<int> onMoneyChange;
 
     /// <summary>
@@ -73,6 +118,16 @@ public class Player : MonoBehaviour
             }
         }
     }
+    public void Die()
+    {
+        if (isAlive)
+        {
+            isAlive = false;
+            Debug.Log("플레이어 사망");
+            onDie?.Invoke();
+        }
+        
+    }
 
     /// <summary>
     /// 테스트용
@@ -93,5 +148,7 @@ public class Player : MonoBehaviour
         // 아이템 획득 반경 그리기
         Handles.DrawWireDisc(transform.position, Vector3.up, ItemPickupRange);
     }
+
+
 #endif
 }
