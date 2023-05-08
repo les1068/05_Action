@@ -158,6 +158,27 @@ public class Player : MonoBehaviour, IHealth, IMana
     }
 
     /// <summary>
+    /// 체력을 지속적으로 회복시키는 함수
+    /// </summary>
+    /// <param name="totalRegen">전체 회복량</param>
+    /// <param name="duration">전체 회복하는데 걸리는 시간</param>
+    public void HealthRegenerate(float totalRegen, float duration)
+    {
+         StartCoroutine(HealthGenerateCoroutine(totalRegen, duration));
+    }
+    IEnumerator HealthGenerateCoroutine(float totalRegen, float duration)
+    {
+        // 초당 회복량 : totalRegen /duration
+        float regenPerSec = totalRegen / duration;
+        float timeElapsed = 0.0f;
+        while (timeElapsed < duration)
+        {
+            timeElapsed += Time.deltaTime;
+            HP += Time.deltaTime * regenPerSec;
+            yield return null;
+        }
+    }
+    /// <summary>
     /// 마나를 지속적으로 회복시키는 함수
     /// </summary>
     /// <param name="totalRegen">전체 회복량</param>
@@ -199,6 +220,7 @@ public class Player : MonoBehaviour, IHealth, IMana
         Handles.DrawWireDisc(transform.position, Vector3.up, ItemPickupRange);
     }
 
+   
 
 
 #endif

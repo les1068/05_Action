@@ -9,7 +9,9 @@ public enum ItemCode
     Sapphire,
     CopperCoin,
     SilverCoin,
-    GoldCoin
+    GoldCoin,
+    Apple,
+    Beer
 }
 public enum ItemSortBy
 {

@@ -34,4 +34,5 @@ interface IHealth
     /// 사망을 알리기 위한 델리게이트를 설정하고 사용하는 프로퍼티
     /// </summary>
     Action onDie { get; set; }
+    void HealthRegenerate(float totalRegen, float duration);
 }
