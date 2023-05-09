@@ -161,4 +161,17 @@ public class ItemSlot
             }
         }
     }
+
+    /// <summary>
+    /// 아이템을 장비/해제하는 함수
+    /// </summary>
+    /// <param name="target">아이템을 장비하거나 해제할 대상</param>
+    public void EquipItem(GameObject target)
+    {
+        IEquipable equipable = ItemData as IEquipable;
+        if(equipable != null)                           // 장비가능한 아이템이면
+        {
+            equipable.AutoEquipUnequip(target, this);   // 상황에 따라 장비하거나 해제하기
+        }
+    }
 }
