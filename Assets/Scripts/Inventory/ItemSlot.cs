@@ -140,11 +140,25 @@ public class ItemSlot
         }
         else
         {
-            // 갯수가 남아있음.
+            // 갯수가 남아있음
             ItemCount = (uint)newCount;
-            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 " +
-                $"\"{ItemData.itemName}\"아이템이 {decreaseCount}개 감소. " +
-                $"현재 {ItemCount}개.");
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 " + $"\"{ItemData.itemName}\"아이템이 {decreaseCount}개 감소. " + $"현재 {ItemCount}개.");
+        }
+    }
+
+    /// <summary>
+    /// 아이템 사용하는 함수
+    /// </summary>
+    /// <param name="target">아이템의 효과를 받을 대상</param>
+    public void UseItme(GameObject target)
+    {
+        IUsable usable = ItemData as IUsable;
+        if (usable != null)           // 사용 가능한 아이템이면
+        {
+            if (usable.Use(target))   // 사용 시도하고
+            {
+                DecreaseSlotItem();   // 사용 성공하면 갯수 하나 감소
+            }
         }
     }
 }

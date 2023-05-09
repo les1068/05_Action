@@ -195,6 +195,7 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
+                inven[slotID].UseItme(Owner.gameObject); // 소유자에게 아이템 사용하기
                 // 아이템 사용 용도로 클릭했다.
             }
         }

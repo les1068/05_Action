@@ -11,7 +11,8 @@ public enum ItemCode
     SilverCoin,
     GoldCoin,
     Apple,
-    Beer
+    Beer,
+    HealingPotion
 }
 public enum ItemSortBy
 {

@@ -5,7 +5,8 @@ using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, 
+    IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     /// <summary>
     /// 드래그 시작을 알리는 델리게이트
@@ -93,7 +94,8 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, IEnd
     /// <summary>
     /// 슬롯을 클릭했을 때 실행되는 함수.
     /// 임시 슬롯에 있는 아이템을 이 슬롯에 넣기 위한 용도
-    /// (아이템 분리하기 위한 용도)
+    /// 아이템 분리하기 위한 용도
+    /// 아이템 사용하기
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)

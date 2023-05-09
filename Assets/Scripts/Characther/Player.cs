@@ -14,6 +14,8 @@ public class Player : MonoBehaviour, IHealth, IMana
     /// </summary>
     Inventory inven;
 
+    public Inventory Inventory => inven;  // 테스트 용도
+
     /// <summary>
     /// 플레이어가 가지고 있는 돈
     /// </summary>

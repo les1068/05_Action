@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface IEquipable
+interface IUsable
 {
+    bool Use(GameObject target);
     
 }
