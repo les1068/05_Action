@@ -51,12 +51,28 @@ public class ItemSlot
     }
 
     /// <summary>
+    /// 이 슬롯의 아이템이 장비되었는지 여부
+    /// </summary>
+    bool isEquipped = false;
+    public bool IsEquipped
+    {
+        get => isEquipped;
+        set
+        {
+            isEquipped = value;
+            onSlotItemChange?.Invoke();
+        }
+    }
+
+    /// <summary>
     /// 생성자
     /// </summary>
     /// <param name="index">이 슬롯이 인벤토리에서 몇번째 슬롯인지(인덱스)</param>
     public ItemSlot(uint index)
     {
         slotIndex = index;  // slotIndex는 이 이후로 절대 변경하지 않아야 한다.
+        ItemCount = 0;
+        IsEquipped = false;
     }
 
     /// <summary>
@@ -70,6 +86,7 @@ public class ItemSlot
         {
             ItemData = data;    // data가 null이 아니면 파라메터로 설정
             ItemCount = count;
+            IsEquipped = false;
             Debug.Log($"인벤토리 {slotIndex}슬롯에 \"{ItemData.itemName}\" 아이템이 {ItemCount}개 설정");
         }
         else
@@ -83,6 +100,7 @@ public class ItemSlot
     {
         ItemData = null;
         ItemCount = 0;
+        IsEquipped = false;
         Debug.Log($"인벤토리 {slotIndex}슬롯을 비웁니다.");
     }
 

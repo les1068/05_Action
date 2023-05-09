@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25e6f3bfd2baced47917be4482b0f2c7, type: 3}
-  m_Name: 10_IronSword
+  m_Name: 11_SliverSword
   m_EditorClassIdentifier: 
-  code: 10
-  itemName: "\uCCA0\uAC80"
-  modelPrefab: {fileID: 904874517034348962, guid: 77f5dbd7b038fd144b34e34765188333,
+  code: 11
+  itemName: "\uC740\uAC80"
+  modelPrefab: {fileID: 904874517034348962, guid: 8a537810bd4681c44803f8bdc034a2c0,
     type: 3}
-  itemIcon: {fileID: 21300000, guid: 8f28955d92038974a9b04aafaeea79b0, type: 3}
-  price: 200
+  itemIcon: {fileID: 21300000, guid: 95052c6b62fb3de4695beaa99f842ac2, type: 3}
+  price: 500
   maxStackCount: 1
-  itemDescription: "\uCCA0\uAC80\uC774\uB2E4"
-  equipPrefab: {fileID: 5610884078883986163, guid: 9163ab49cad046a46a13f2e794250519,
+  itemDescription: "\uC740\uAC80\uC774\uB2E4"
+  equipPrefab: {fileID: 3832907126045494399, guid: 0695be8de0d73924fb24527fccfa7f39,
     type: 3}
-  attackPower: 30
+  attackPower: 50

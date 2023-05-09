@@ -14,7 +14,8 @@ public class ItemSlotUI_Base : MonoBehaviour
     public ItemSlot ItemSlot => itemSlot;
     Image ItemImage;
     TextMeshProUGUI itemCount;
-    private void Awake()
+
+    protected virtual void Awake()
     {
         Transform child = transform.GetChild(0);
         ItemImage =  child.GetComponent<Image>();
@@ -43,7 +44,7 @@ public class ItemSlotUI_Base : MonoBehaviour
     /// </summary>
     private void Refresh()
     {
-        if(itemSlot.IsEmpty)
+        if (itemSlot.IsEmpty)
         {
             // 슬롯에 아이템이 들어있지 않을때
             ItemImage.sprite = null;       // 이미지 제거하고
@@ -54,7 +55,12 @@ public class ItemSlotUI_Base : MonoBehaviour
         {
             ItemImage.sprite = itemSlot.ItemData.itemIcon;  // 이미지 설정하고
             ItemImage.color = Color.white;                 // 불투명하게 만들고
-            itemCount.text=itemSlot.ItemCount.ToString();  // 갯수 글자로 넣기
+            itemCount.text = itemSlot.ItemCount.ToString();  // 갯수 글자로 넣기
         }
+        OnRefresh();
+    }
+    protected virtual void OnRefresh()
+    {
+
     }
 }

@@ -28,6 +28,7 @@ public class ItemData_Equip : ItemData, IEquipable
             IEquipTarget equipTarget = target.GetComponent<IEquipTarget>();
             if (equipTarget != null)
             {
+                slot.IsEquipped = true;
                 equipTarget.EquipItem(EquipPart, slot);
                 Debug.Log($"{slot.Index}번째 슬롯 아이템 장착");
             }
@@ -46,6 +47,7 @@ public class ItemData_Equip : ItemData, IEquipable
             IEquipTarget equipTarget = target.GetComponent<IEquipTarget>();
             if (equipTarget != null)
             {
+                slot.IsEquipped = false;
                 equipTarget.UnEquipItem(EquipPart);
                 Debug.Log($"{slot.Index}번째 슬롯 아이템 해제");
             }

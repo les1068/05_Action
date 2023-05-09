@@ -150,6 +150,10 @@ public class InventoryUI : MonoBehaviour
     /// <param name="slotID">드래그 시작 슬롯의 ID</param>
     private void OnItemMoveBegin(uint slotID)
     {
+        if (inven[slotID].IsEquipped)           // 드래그 시작할 때 장비되어있으면 장비 해제
+        {
+            inven[slotID].EquipItem(Owner.gameObject);
+        }
         inven.MoveItem(slotID, tempSlotUI.ID);  // 시작 슬롯의 내용과 임시슬롯의 내용을 서로 교체시키기
         tempSlotUI.Open();                      // 임시슬롯 보이게 만들기
     }

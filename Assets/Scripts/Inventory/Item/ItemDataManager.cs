@@ -14,7 +14,10 @@ public enum ItemCode
     Beer,
     HealingPotion,
     manaPotion,
-    IronSword  
+    IronSword,  
+    SilverSword, 
+    OldSword,
+    Shield
 }
 public enum EquipType
 {

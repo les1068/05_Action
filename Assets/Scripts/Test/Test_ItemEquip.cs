@@ -12,11 +12,18 @@ public class Test_ItemEquip : Test_Base
     }
     protected override void Test1(InputAction.CallbackContext _)
     {
-
         ItemFactory.MakeItem(ItemCode.IronSword);
     }
     protected override void Test2(InputAction.CallbackContext _)
     {
         player.Inventory.AddItem(ItemCode.IronSword);
+    }
+    protected override void Test3(InputAction.CallbackContext _)
+    {
+        player.Inventory.AddItem(ItemCode.SilverSword);
+    }
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        player.Inventory.AddItem(ItemCode.OldSword);
     }
 }

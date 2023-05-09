@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler, 
+public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler,
     IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
+
+    TextMeshProUGUI equipped;
+
     /// <summary>
     /// 드래그 시작을 알리는 델리게이트
     /// </summary>
@@ -36,6 +40,13 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler,
     /// 슬롯 위에서 마우스가 움직일 때 실행되는 델리게이트
     /// </summary>
     public Action<Vector2> onPointerMove;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Transform child = transform.GetChild(2);
+        equipped = child.GetComponent<TextMeshProUGUI>();
+    }
 
     /// <summary>
     /// 이 슬롯UI를 초기화 하는 함수
@@ -131,5 +142,20 @@ public class ItemSlotUI : ItemSlotUI_Base, IDragHandler, IBeginDragHandler,
     public void OnPointerMove(PointerEventData eventData)
     {
         onPointerMove?.Invoke(eventData.position);  // 디테일 창 이동시키기
+    }
+
+    /// <summary>
+    /// UI가 갱신될 때 ItemSlotUI가 추가로 해야될 작업 수행하는 함수
+    /// </summary>
+    protected override void OnRefresh()
+    {
+        if (ItemSlot.IsEquipped)
+        {
+            equipped.color = Color.red;  // 장비 중이면 빨간색
+        }
+        else
+        {
+            equipped.color = Color.clear;// 장비 안했으면 투명하게
+        }
     }
 }

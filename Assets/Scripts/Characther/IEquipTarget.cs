@@ -30,8 +30,5 @@ interface IEquipTarget
     /// </summary>
     /// <param name="part">장비될 부위</param>
     /// <returns>장비될 부위의 부모 트랜스폼</returns>
-    Transform GetPartTransform(EquipType part)
-    {
-        return null;
-    }
+    Transform GetPartTransform(EquipType part);
 }
