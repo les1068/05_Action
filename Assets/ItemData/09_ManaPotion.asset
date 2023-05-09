@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f95a40fe5ad0948ad2415e4de6f59d, type: 3}
+  m_Name: 09_ManaPotion
+  m_EditorClassIdentifier: 
+  code: 9
+  itemName: "\uB9C8\uB098 \uD3EC\uC158"
+  modelPrefab: {fileID: 904874517034348962, guid: 8bda31949445a714e9240de82934139b,
+    type: 3}
+  itemIcon: {fileID: 21300000, guid: b7f77607c82ea4142a2070c0e37e1756, type: 3}
+  price: 150
+  maxStackCount: 5
+  itemDescription: "\uB9C8\uB098 \uD68C\uBCF5 \uD3EC\uC158\uC774\uB2E4. (\uB9C8\uB098\uB97C
+    3\uCD08\uAC04 30\uC744 \uD68C\uBCF5\uD55C\uB2E4)"
+  totalRegne: 30
+  duration: 3

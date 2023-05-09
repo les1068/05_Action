@@ -19,5 +19,5 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
   price: 100
   maxStackCount: 5
-  itemDescription: "\uC124\uBA85"
+  itemDescription: "\uCCB4\uB825 \uD68C\uBCF5 \uD3EC\uC158\uC774\uB2E4"
   heal: 20

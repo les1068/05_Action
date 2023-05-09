@@ -11,6 +11,7 @@ public class Test_ItemUse : Test_Base
     {
         player = GameManager.Inst.Player;
         player.HP = 10;
+        player.MP = 10;
     }
     protected override void Test1(InputAction.CallbackContext _)
     {
@@ -24,6 +25,10 @@ public class Test_ItemUse : Test_Base
     }
     protected override void Test3(InputAction.CallbackContext _)
     {
-        player.HP = 10;
+        ItemFactory.MakeItem(ItemCode.manaPotion);
+    }
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        player.MP = 10;
     }
 }

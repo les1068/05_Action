@@ -12,7 +12,13 @@ public enum ItemCode
     GoldCoin,
     Apple,
     Beer,
-    HealingPotion
+    HealingPotion,
+    manaPotion
+}
+public enum EquipType
+{
+    Weapon = 0,
+    shield
 }
 public enum ItemSortBy
 {
