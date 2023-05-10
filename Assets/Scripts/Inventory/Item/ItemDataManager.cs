@@ -17,12 +17,13 @@ public enum ItemCode
     IronSword,  
     SilverSword, 
     OldSword,
-    Shield
+    RoundShield,
+    KiteShield
 }
 public enum EquipType
 {
     Weapon = 0,
-    shield
+    Shield
 }
 public enum ItemSortBy
 {

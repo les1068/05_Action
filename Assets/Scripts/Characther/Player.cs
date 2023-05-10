@@ -270,7 +270,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
             case EquipType.Weapon:
                 result = weaponParent;
                 break;
-            case EquipType.shield:
+            case EquipType.Shield:
                 result = shieldParent;
                 break;
         }
