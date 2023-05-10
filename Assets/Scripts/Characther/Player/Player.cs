@@ -140,6 +140,11 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     /// </summary>
     Action<bool> onWeaponEnable;
 
+    /// <summary>
+    /// 무기 이팩트 활성화 비활성화를 알리는 델리게이트 파라메터가 ture면 켜는 것, false면 꺼지는 것
+    /// </summary>
+    Action<bool> onWeaponEffectEnable;
+
     PlayerController playerController;
     private void Awake()
     {
@@ -247,6 +252,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
             {
                 Weapon weapon = obj.GetComponent<Weapon>();
                 onWeaponEnable += weapon.colliderEnable;
+                onWeaponEffectEnable = weapon.EffectPlay;
             }
         }
     }
@@ -254,7 +260,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     /// <summary>
     /// 아이템 장비를 해제하는 함수
     /// </summary>
-    /// <param name="part">아이ㅔㅁ을 해제할 부위</param>
+    /// <param name="part">아이템을 해제할 부위</param>
     public void UnEquipItem(EquipType part)
     {
         Transform partParent = GetPartTransform(part);
@@ -267,6 +273,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
         if (part == EquipType.Weapon)
         {
             onWeaponEnable = null;
+            onWeaponEffectEnable = null;
         }
         partsSlots[(int)part].IsEquipped = false;      // 장비 해제되었다고 알림
         partsSlots[(int)part] = null;                  // 기록 비워두기
@@ -293,13 +300,29 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
         return result;
     }
 
+    /// <summary>
+    /// 무기 컬러이더 활성화하라고 신호 보내는 함수 (애니메이션에서 실행 시킴)
+    /// </summary>
     private void WeaponEnable()
     {
         onWeaponEnable?.Invoke(true);
     }
+
+    /// <summary>
+    /// 무기 컬러이더 비활성화하라고 신호 보내는 함수 (애니메이션에서 실행 시킴)
+    /// </summary>
     private void WeaponDisable()
     {
         onWeaponEnable?.Invoke(false);
+    }
+
+    /// <summary>
+    /// 무기 이팩트 활성화/비활성화하라고 신호보내는 함수.(Attack 계열 애니메이션에서 실행 시킴)
+    /// </summary>
+    /// <param name="enable">true면 활성화, false면 비활성화</param>
+    public void WeaponEffectEnable(bool enable)
+    {
+        onWeaponEffectEnable?.Invoke(enable);
     }
 
     /// <summary>
