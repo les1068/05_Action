@@ -43,7 +43,7 @@ public class ItemFactory
             Vector2 noise = Random.insideUnitCircle * 0.5f;
             pos.x += noise.x;
             pos.z += noise.y;
-            obj.transform.Rotate(0, Random.Range(0.0f, 360.0f), 0);  // 시작 각도 다르게 만들기
+            //obj.transform.Rotate(0, Random.Range(0.0f, 360.0f), 0);  // 시작 각도 다르게 만들기
         }
         obj.transform.position = pos;
 

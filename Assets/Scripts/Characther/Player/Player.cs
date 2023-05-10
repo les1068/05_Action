@@ -326,6 +326,16 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     }
 
     /// <summary>
+    /// 무기와 방패를 표시하거나 표시하지 않는 함수
+    /// </summary>
+    /// <param name="isShow">true면 보여주고, false면 안보여주기</param>
+    public void ShowWeaponAndShield(bool isShow)
+    {
+        weaponParent.gameObject.SetActive(isShow);
+        shieldParent.gameObject.SetActive(isShow);
+    }
+
+    /// <summary>
     /// 테스트용
     /// </summary>
     /// <param name="code">추가할 아이템 종류</param>

@@ -44,6 +44,11 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     MoneyPanel money;
 
+    /// <summary>
+    /// 인벤토리 닫기 버튼
+    /// </summary>
+    Button closeButton;
+
 
     PlayerInputActions inputActions;
     bool isShiftPress = false;
@@ -51,6 +56,9 @@ public class InventoryUI : MonoBehaviour
     {
         Transform slotParent = transform.GetChild(0);
         slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
+
+        Transform child = transform.GetChild(1);
+        closeButton = child.GetComponent<Button>();
 
         tempSlotUI = GetComponentInChildren<TempitemSlotUI>();
 
@@ -283,7 +291,7 @@ public class InventoryUI : MonoBehaviour
     private void OnItemDrop(InputAction.CallbackContext _)
     {
         Vector2 screenPos = Mouse.current.position.ReadValue();  // 마우스 커서 위치 가져오기
-        if (!IsInInventoryArea(screenPos))  
+        if (!IsInInventoryArea(screenPos))
         {
             // 인벤토리 영역 밖이면
             tempSlotUI.OnDrop(screenPos);  // 아이템 드랍 시도
