@@ -9,10 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5086268201243115593}
+  - component: {fileID: 1611851347454578360}
   - component: {fileID: 8158787969259999212}
   - component: {fileID: 6259195511646583590}
   - component: {fileID: 7643490112457715014}
   - component: {fileID: 6662810660462867677}
+  - component: {fileID: 2755639614787220346}
   m_Layer: 0
   m_Name: Sword1
   m_TagString: Untagged
@@ -35,6 +37,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1611851347454578360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610884078883986163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a28bb84d7d2644fa6ac1a412d53e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &8158787969259999212
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4923,3 +4937,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!136 &2755639614787220346
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610884078883986163}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 0.089639805
+  m_Height: 1.0960895
+  m_Direction: 1
+  m_Center: {x: -0.00000015646219, y: 0.6633592, z: 0.0030809492}
