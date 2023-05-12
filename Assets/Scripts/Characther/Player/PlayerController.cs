@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {   // 움직이면 currentSpeed, 안 움직이면 0
-            if(inputDir.sqrMagnitude > 0.01)
+            if (inputDir.sqrMagnitude > 0.01)
             {
                 return currentSpeed / runSpeed;
             }
@@ -73,9 +73,9 @@ public class PlayerController : MonoBehaviour
             {
                 case MoveMode.Walk:
                     currentSpeed = walkSpeed;            // 속도 변경
-                    if(inputDir != Vector3.zero)         // 이동 중에 변경되었으면
+                    if (inputDir != Vector3.zero)         // 이동 중에 변경되었으면
                     {
-                        animator.SetFloat("Speed",0.3f); // 애니메이션 파라메터도 변경
+                        animator.SetFloat("Speed", 0.3f); // 애니메이션 파라메터도 변경
                     }
                     break;
                 case MoveMode.Run:
@@ -119,8 +119,11 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         InventoryUI invenUI = GameManager.Inst.InvenUI;
-        invenUI.onInventoryOpen += inputActions.Player.Attack.Disable;  // 인벤토리가 열릴때는 공격 안함
-        invenUI.onInventoryClose += inputActions.Player.Attack.Enable;  // 인벤토리가 닫히면 다시 공격함
+        if (invenUI)
+        {
+            invenUI.onInventoryOpen += inputActions.Player.Attack.Disable;  // 인벤토리가 열릴때는 공격 안함
+            invenUI.onInventoryClose += inputActions.Player.Attack.Enable;  // 인벤토리가 닫히면 다시 공격함
+        }
     }
 
     private void OnEnable()
