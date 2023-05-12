@@ -98,6 +98,14 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         inputActions = new PlayerInputActions();
     }
+
+    private void Start()
+    {
+        InventoryUI invenUI = GameManager.Inst.InvenUI;
+        invenUI.onInventoryOpen += inputActions.Player.Attack.Disable;  // 인벤토리가 열릴때는 공격 안함
+        invenUI.onInventoryClose += inputActions.Player.Attack.Enable;  // 인벤토리가 닫히면 다시 공격함
+    }
+
     private void OnEnable()
     {
         inputActions.Player.Enable();

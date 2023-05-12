@@ -49,16 +49,33 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     Button closeButton;
 
+    /// <summary>
+    /// 인벤토리 열고/닫는 효과를 위한 컴포넌트
+    /// </summary>
+    CanvasGroup canvasGroup;
+
+    /// <summary>
+    /// 인벤토리가 열렸을 때 실행될 델리게이트
+    /// </summary>
+    public Action onInventoryOpen;
+
+    /// <summary>
+    /// 인벤토리가 닫혔을 때 실행될 델리게이트
+    /// </summary>
+    public Action onInventoryClose;
 
     PlayerInputActions inputActions;
     bool isShiftPress = false;
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         Transform slotParent = transform.GetChild(0);
         slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
 
         Transform child = transform.GetChild(1);
         closeButton = child.GetComponent<Button>();
+        closeButton.onClick.AddListener(Close);
 
         tempSlotUI = GetComponentInChildren<TempitemSlotUI>();
 
@@ -77,11 +94,13 @@ public class InventoryUI : MonoBehaviour
         inputActions.UI.Shift.performed += OnShiftPress;
         inputActions.UI.Shift.canceled += OnShiftPress;
         inputActions.UI.Click.canceled += OnItemDrop;
+        inputActions.UI.InventoryOnOff.performed += OnInventroyShortCut;
     }
 
 
     private void OnDisable()
     {
+        inputActions.UI.InventoryOnOff.performed -= OnInventroyShortCut;
         inputActions.UI.Click.canceled -= OnItemDrop;
         inputActions.UI.Shift.canceled -= OnShiftPress;
         inputActions.UI.Shift.performed -= OnShiftPress;
@@ -149,6 +168,9 @@ public class InventoryUI : MonoBehaviour
         // 오너의 돈이 변경될 때 머니 패널의 Refresh함수 실행하도록 함수 등록
         Owner.onMoneyChange += money.Refresh;
         money.Refresh(Owner.Money);     // 첫번째는 강제 리프레시
+
+        // 시작할 때 닫아 놓기
+        Close();
     }
 
 
@@ -311,6 +333,45 @@ public class InventoryUI : MonoBehaviour
 
         return min.x < screenPos.x && screenPos.x < max.x && min.y < screenPos.y && screenPos.y < max.y;
     }
+
+    /// <summary>
+    /// 인벤토리가 열리고 닫히는 입력이 들어오면 실행될 함수
+    /// </summary>
+    /// <param name="_"></param>
+    private void OnInventroyShortCut(InputAction.CallbackContext _)
+    {
+        Debug.Log("I");
+        if (canvasGroup.interactable)
+        {
+            // 열려있으면 닫고
+            Close();
+
+        }
+        else
+        {
+            // 닫혀있응면 연다
+            Open();
+        }
+
+
+    }
+
+    private void Open()
+    {
+        canvasGroup.alpha = 1.0f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        onInventoryOpen?.Invoke();
+    }
+    private void Close()
+    {
+        canvasGroup.alpha = 0.0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+        onInventoryClose?.Invoke();
+    }
+
+
     /// <summary>
     /// 테스트 용도
     /// </summary>
