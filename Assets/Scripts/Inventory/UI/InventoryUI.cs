@@ -340,7 +340,7 @@ public class InventoryUI : MonoBehaviour
     /// <param name="_"></param>
     private void OnInventroyShortCut(InputAction.CallbackContext _)
     {
-        Debug.Log("I");
+        //Debug.Log("I");
         if (canvasGroup.interactable)
         {
             // 열려있으면 닫고
