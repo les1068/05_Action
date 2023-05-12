@@ -136,6 +136,11 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     public float ItemPickupRange = 2.0f;
 
     /// <summary>
+    /// 플레이어의 현재 속도 비율 (0이면 정지, 1이면 최고 속도)
+    /// </summary>
+    public float SpeedRatio => playerController.SpeedRatio;
+
+    /// <summary>
     /// 무기 활성화 비활성화를 알리는 델리게이트 파라메터가 ture면 켜는 것, false면 꺼지는 것
     /// </summary>
     Action<bool> onWeaponEnable;

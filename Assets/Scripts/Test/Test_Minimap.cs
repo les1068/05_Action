@@ -18,4 +18,8 @@ public class Test_Minimap : Test_Base
         obj.transform.position = new Vector3(-5, 0, -5);
         obj = ItemFactory.MakeItem(ItemCode.Emerald);
     }
+    protected override void Test1(InputAction.CallbackContext _)
+    {
+        GameManager.Inst.Player.Die();
+    }
 }

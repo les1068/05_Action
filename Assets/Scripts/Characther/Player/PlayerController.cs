@@ -34,6 +34,23 @@ public class PlayerController : MonoBehaviour
     Quaternion targetRotation = Quaternion.identity;
 
     /// <summary>
+    /// 플레이어의 현재 속도 비율 (0이면 정지, 1이면 최고 속도)
+    /// </summary>
+    public float SpeedRatio
+    {
+        get
+        {   // 움직이면 currentSpeed, 안 움직이면 0
+            if(inputDir.sqrMagnitude > 0.01)
+            {
+                return currentSpeed / runSpeed;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+    /// <summary>
     /// 이동 상태 표시용 enum
     /// </summary>
     enum MoveMode

@@ -1289,7 +1289,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da313e63875e024458c8609ac037a8f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follwSpeed: 3
+  normalSize: 20
+  maxSize: 30
+  followSpeed: 3
+  sizeSpeed: 5
+  targetSize: 20
 --- !u!1 &1571647347
 GameObject:
   m_ObjectHideFlags: 0
