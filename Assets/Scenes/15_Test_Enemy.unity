@@ -1325,6 +1325,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7647134206250791342, guid: 19573f0b3e5dac44999904681b08bc6c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 7828668361094481246, guid: 19573f0b3e5dac44999904681b08bc6c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1807,6 +1812,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6006479599571950229, guid: df94a88a59549e740bad0b2a4838a7fc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 99e0b0dbaf8f98c40abcd3fccc4a422c, type: 2}
     - target: {fileID: 6006479599571950231, guid: df94a88a59549e740bad0b2a4838a7fc,
         type: 3}
       propertyPath: m_Name
@@ -2050,6 +2060,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypoints: {fileID: 0}
   waitDuration: 1
+  sightRange: 10
+  sightHalfAngle: 50
+  closeSightRange: 2.5
 --- !u!1001 &2455389670634298878
 PrefabInstance:
   m_ObjectHideFlags: 0
