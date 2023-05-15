@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
+public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
 {
     /// <summary>
     /// 이 플레이어가 가지고 있을 인벤토리
@@ -140,6 +140,12 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     /// </summary>
     public float SpeedRatio => playerController.SpeedRatio;
 
+    public float attackPower => 10.0f;
+    public float AttackPower => attackPower;
+
+    public float defencePower => 3.0f;
+    public float DefencePower => defencePower;
+
     /// <summary>
     /// 무기 활성화 비활성화를 알리는 델리게이트 파라메터가 ture면 켜는 것, false면 꺼지는 것
     /// </summary>
@@ -151,8 +157,11 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     Action<bool> onWeaponEffectEnable;
 
     PlayerController playerController;
+
+    Animator anim;
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         playerController.OnItemPickUp += OnItemPickUp;        // 아이템 줍는다는 신호가 들어오면 줍는 처리 실행
 
@@ -325,7 +334,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     }
 
     /// <summary>
-    /// 무기 이팩트 활성화/비활성화하라고 신호보내는 함수.(Attack 계열 애니메이션에서 실행 시킴)
+    /// 무기 이팩트 활성화/비활성화하라고 신호보내는 함수.(AttackState 계열 애니메이션에서 실행 시킴)
     /// </summary>
     /// <param name="enable">true면 활성화, false면 비활성화</param>
     public void WeaponEffectEnable(bool enable)
@@ -342,7 +351,21 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
         weaponParent.gameObject.SetActive(isShow);
         shieldParent.gameObject.SetActive(isShow);
     }
+    public void Attack(IBattle target)
+    {
+        target?.Defence(AttackPower);
+        Debug.Log($"{target.transform.gameObject.name}에게 {attackPower}만큼 공격을 했습니다.");
+    }
 
+    public void Defence(float damage)
+    {
+        if (IsAlive)
+        {
+            anim.SetTrigger("Hit");
+            HP -= Mathf.Max(1, damage - DefencePower);
+            Debug.Log($"{Mathf.Max(0, damage - DefencePower)}만큼의 데미지를 입었습니다");
+        }
+    }
     /// <summary>
     /// 테스트용
     /// </summary>
@@ -362,6 +385,8 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
         // 아이템 획득 반경 그리기
         Handles.DrawWireDisc(transform.position, Vector3.up, ItemPickupRange);
     }
+
+    
 
 #endif
 }

@@ -6,9 +6,6 @@ public class Weapon : MonoBehaviour
 {
     public GameObject hitEffect;
 
-    // 공격을 했을 때 적이 맞으면 맞은 위치에 hitEffect 생성하기
-    // 이팩트 효과가 끝나면 자동으로 사라지게 만들기
-
     /// <summary>
     /// 칼날의 역할을 할 컬라이더. 특정 타이밍에만 활성화
     /// </summary>
@@ -18,20 +15,30 @@ public class Weapon : MonoBehaviour
     /// 칼 이팩트용 파티클 시스템
     /// </summary>
     ParticleSystem ps;
+
+    Player player;
     private void Awake()
     {
         blade = GetComponent<CapsuleCollider>();
         ps = GetComponent<ParticleSystem>();
         Player player = GameManager.Inst.Player;
     }
-
+    private void Start()
+    {
+        player = GameManager.Inst.Player;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
             Debug.Log($"{other.name}공격함");
+            IBattle target = other.GetComponent<IBattle>();
+            if (target != null)
+            {
+                player.Attack(target);
+            }
             Vector3 impactPoint = transform.position + transform.up;
-            Vector3 effectPoint = other.ClosestPoint( impactPoint );
+            Vector3 effectPoint = other.ClosestPoint(impactPoint);
 
             Instantiate(hitEffect, effectPoint, Quaternion.identity);
         }

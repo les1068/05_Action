@@ -1291,8 +1291,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalSize: 20
   maxSize: 30
-  followSpeed: 3
   sizeSpeed: 5
+  followSpeed: 3
   targetSize: 20
 --- !u!1 &1571647347
 GameObject:
@@ -1842,35 +1842,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8031272866228398841, guid: ab9f56e20e841544baa6d9a51a9cf583,
-        type: 3}
-      propertyPath: itemDatas.Array.size
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 8031272866228398841, guid: ab9f56e20e841544baa6d9a51a9cf583,
-        type: 3}
-      propertyPath: itemDatas.Array.data[11]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6413afbc441a903419030fe810e679b9,
-        type: 2}
-    - target: {fileID: 8031272866228398841, guid: ab9f56e20e841544baa6d9a51a9cf583,
-        type: 3}
-      propertyPath: itemDatas.Array.data[12]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8c59944f0d8d3504fb413ed74b4ddd6a,
-        type: 2}
-    - target: {fileID: 8031272866228398841, guid: ab9f56e20e841544baa6d9a51a9cf583,
-        type: 3}
-      propertyPath: itemDatas.Array.data[13]
-      value: 
-      objectReference: {fileID: 11400000, guid: 45461df9aa3d28e4d8acc3d68d7d2778,
-        type: 2}
-    - target: {fileID: 8031272866228398841, guid: ab9f56e20e841544baa6d9a51a9cf583,
-        type: 3}
-      propertyPath: itemDatas.Array.data[14]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9ecb951011848cd40ac199ec82938081,
-        type: 2}
     - target: {fileID: 8031272866228398846, guid: ab9f56e20e841544baa6d9a51a9cf583,
         type: 3}
       propertyPath: m_Name

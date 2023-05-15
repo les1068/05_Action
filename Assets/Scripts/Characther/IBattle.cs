@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-interface IBattle
+public interface IBattle
 {
     /// <summary>
     /// 자신의 transform(공격할 때 바라봐야 하니까)
@@ -24,7 +23,7 @@ interface IBattle
     /// 공격하는 함수
     /// </summary>
     /// <param name="target">공격할 대상</param>
-    void Attack(IBattle target);
+    public void Attack(IBattle target);
 
     /// <summary>
     /// 방어하는 함수

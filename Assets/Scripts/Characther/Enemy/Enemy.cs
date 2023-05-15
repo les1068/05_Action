@@ -10,7 +10,7 @@ using Unity.Mathematics;
 using UnityEditor;
 #endif
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IBattle, IHealth
 {
     // 순찰
     // - 정해진 웨이포인트 지점을 반복해서 이동
@@ -29,17 +29,17 @@ public class Enemy : MonoBehaviour
 
     protected enum EnemyState
     {
-        Wait = 0,  // 대기 상태
-        Patrol,    // 순찰 상태
-        Chase,     // 추적 상태
-        Attack,    // 공격 상태
-        Die        // 죽은 상태
+        WaitState = 0,  // 대기 상태
+        PatrolState,    // 순찰 상태
+        ChaseState,     // 추적 상태
+        AttackState,    // 공격 상태
+        DieState        // 죽은 상태
     }
 
     /// <summary>
     /// 현재 적의 상태
     /// </summary>
-    EnemyState state = EnemyState.Patrol; // Start할 때 wait로 설정하기 위해 임시로 Patrol로 설정
+    EnemyState state = EnemyState.PatrolState; // Start할 때 wait로 설정하기 위해 임시로 Patrol로 설정
 
     /// <summary>
     /// 상태를 확인하고 변경시 일어나는 처리를 하는 프로퍼티
@@ -54,35 +54,35 @@ public class Enemy : MonoBehaviour
                 state = value;
                 switch (state)    // 변경된 상태에 따라 서로 다른 처리를 수행
                 {
-                    case EnemyState.Wait:
-                        // Wait 상태가 될 때 처리해야 할 일들
+                    case EnemyState.WaitState:
+                        // WaitState 상태가 될 때 처리해야 할 일들
                         agent.isStopped = true;          // 길찾기로 움직이던 것 정지
                         agent.velocity = Vector3.zero;   // 길찾기 관성 제거
                         anim.SetTrigger("Stop");         // Idle 애니메이션 재생
                         WaitTimer = waitDuration + UnityEngine.Random.Range(0.0f, 0.5f);  // 기다릴 시간 설정
-                        StateUpdate = Update_Wait;       // Wait 상태용 업데이트 함수 설정
+                        StateUpdate = Update_Wait;       // WaitState 상태용 업데이트 함수 설정
                         break;
 
-                    case EnemyState.Patrol:
-                        // Patrol 상태가 될 때 처리해야 할 일들
+                    case EnemyState.PatrolState:
+                        // PatrolState 상태가 될 때 처리해야 할 일들
                         agent.isStopped = false;         // 길찾기 정지를 해제(다시 움직일 수 있게 설정)
                         agent.SetDestination(moveTarget.position);  // 움직일 목적지 설정
                         anim.SetTrigger("Move");         // Move 애니메이션 재생
-                        StateUpdate = Updata_Patrol;     // Patrol 상태용 업데이트 함수 설정
+                        StateUpdate = Updata_Patrol;     // PatrolState 상태용 업데이트 함수 설정
                         break;
 
-                    case EnemyState.Chase:
-                        // Chase 상태가 될 때 처리해야 할 일들
+                    case EnemyState.ChaseState:
+                        // ChaseState 상태가 될 때 처리해야 할 일들
                         agent.isStopped = false;         // 길찾기 정지를 해제(다시 움직일 수 있게 설정)
                         agent.SetDestination(chaseTarget.position);  // 추적 대상으로 이동하게 설정
                         anim.SetTrigger("Move");         // Move 애니메이션 재생
-                        StateUpdate = Updata_Chase;      // Chase 상태용 업데이트 함수 설정
+                        StateUpdate = Updata_Chase;      // ChaseState 상태용 업데이트 함수 설정
                         break;
 
-                    case EnemyState.Attack:
+                    case EnemyState.AttackState:
                         break;
 
-                    case EnemyState.Die:
+                    case EnemyState.DieState:
                         break;
                 }
             }
@@ -96,7 +96,7 @@ public class Enemy : MonoBehaviour
 
 
     // 순찰 관련 데이터 --------------------------------
-
+    [Header("순찰 데이터")]
     /// <summary>
     /// 순찰할 웨이포인트 모음
     /// </summary>
@@ -108,7 +108,7 @@ public class Enemy : MonoBehaviour
     Transform moveTarget;
 
     // 대기 관련 데이터 --------------------------------
-
+    [Header("대기 데이터")]
     /// <summary>
     /// 목적지에 도달하면 기다리는 시간
     /// </summary>
@@ -126,13 +126,13 @@ public class Enemy : MonoBehaviour
             waitTimer = value;
             if (waypoints != null && waitTimer < 0.0f)   // waitTimer가 0보다 작아지면 순찰 상태로 전환
             {
-                State = EnemyState.Patrol;
+                State = EnemyState.PatrolState;
             }
         }
     }
 
     // 추적 관련 데이터 --------------------------------
-
+    [Header("추적 데이터")]
     /// <summary>
     /// 전체 시야 범위
     /// </summary>
@@ -156,8 +156,39 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// 추적 중이면 ture, 아니면 false
     /// </summary>
+
     bool IsChasing => chaseTarget != null;
 
+    // 전투 관련 데이터 --------------------------------
+    [Header("전투 데이터")]
+    public float attackPower = 10.0f;
+    public float AttackPower => attackPower;
+
+    public float defencePower = 2.0f;
+    public float DefencePower => defencePower;
+
+    public bool IsAlive => hp > 0;
+
+    public float maxHP = 100.0f;
+    float hp = 100.0f;
+    public float HP
+    {
+        get => hp;
+        set
+        {
+            hp = value;
+            if (State != EnemyState.DieState && hp <= 0)
+            {
+                Die();
+            }
+            hp = Mathf.Clamp(hp, 0.0f, maxHP);
+            onHealthChange?.Invoke(hp / maxHP);
+        }
+    }
+    public float MaxHP => maxHP;
+
+    public Action<float> onHealthChange { get; set; }
+    public Action onDie { get; set; }
 
     // 컴포넌트 ---------------------------------------
 
@@ -181,8 +212,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         moveTarget = waypoints.Current;
-        State = EnemyState.Wait;
-        anim.ResetTrigger("Stop");   // 첫 Wait 상태로 가면서 Stop 트리거가 미리 설정되는 것 방지
+        State = EnemyState.WaitState;
+        anim.ResetTrigger("Stop");   // 첫 WaitState 상태로 가면서 Stop 트리거가 미리 설정되는 것 방지
     }
     private void Update()
     {
@@ -198,13 +229,13 @@ public class Enemy : MonoBehaviour
         if (SearchPlayer())
         {
             // 플레이어 발견하면 즉시 추적상태로 변경
-            State = EnemyState.Chase;
+            State = EnemyState.ChaseState;
         }
         else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             // 목적지에 도착했다.
             moveTarget = waypoints.Next();   // 도착하면 다음 지점 설정해 놓고
-            State = EnemyState.Wait;         // 대기 상태로 변경
+            State = EnemyState.WaitState;         // 대기 상태로 변경
         }
     }
 
@@ -216,7 +247,7 @@ public class Enemy : MonoBehaviour
         if (SearchPlayer())
         {
             // 플레이어 발견하면 즉시 추적상태로 변경
-            state = EnemyState.Chase;
+            state = EnemyState.ChaseState;
         }
         else
         {
@@ -230,13 +261,13 @@ public class Enemy : MonoBehaviour
         if (SearchPlayer())
         {
             // 플레이어 발견하면 즉시 추적상태로 변경
-            State = EnemyState.Chase;
+            State = EnemyState.ChaseState;
             agent.SetDestination(chaseTarget.position); // state는 같은 값이면 수행을 안함
         }
         else
         {
             // 안보이면 대기
-            State = EnemyState.Wait;
+            State = EnemyState.WaitState;
         }
     }
 
@@ -280,6 +311,34 @@ public class Enemy : MonoBehaviour
         }
         return result;
     }
+
+    public void Attack(IBattle target)
+    {
+        target?.Defence(AttackPower);
+        Debug.Log($"{target.transform.gameObject.name}에게 {attackPower}만큼 공격을 했습니다.");
+    }
+
+    public void Defence(float damage)
+    {
+        if (State != EnemyState.DieState)
+        {
+            anim.SetTrigger("Hit");
+            HP -= Mathf.Max(0, (damage - DefencePower));
+            Debug.Log($"{Mathf.Max(1, (damage - DefencePower))}만큼의 데미지를 입었습니다");
+        }
+    }
+    public void Die()
+    {
+        State = EnemyState.DieState;
+        onDie?.Invoke();
+        Debug.Log($"{this.gameObject.name}이 죽었습니다");
+    }
+
+    public void HealthRegenerate(float totalRegen, float duration)
+    {
+        // 아무 동작 안함
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
