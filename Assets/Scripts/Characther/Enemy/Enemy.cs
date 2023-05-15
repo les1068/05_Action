@@ -230,7 +230,8 @@ public class Enemy : MonoBehaviour
         if (SearchPlayer())
         {
             // 플레이어 발견하면 즉시 추적상태로 변경
-            state = EnemyState.Chase;
+            State = EnemyState.Chase;
+            agent.SetDestination(chaseTarget.position); // state는 같은 값이면 수행을 안함
         }
         else
         {
@@ -297,17 +298,17 @@ public class Enemy : MonoBehaviour
         // 원거리 시야 그리기
         Vector3 eyePosition = transform.position + transform.up * 0.5f;  // 눈의 위치 계산
 
-        Vector3 forwardPosition = transform.forward * sightRange;        // 앞쪽 방향으로 sightRange만큼 나간 위치
-        Handles.DrawDottedLine(eyePosition, eyePosition + forwardPosition, 2.0f);  // eye에서 eye 앞쪽 위치까지 선긋기
+        Vector3 forward = transform.forward * sightRange;        // sightRange만큼 앞으로 나가는 방향
+        Handles.DrawDottedLine(eyePosition, eyePosition + forward, 2.0f);  // eye에서 eye 앞쪽 위치까지 선긋기
 
         Quaternion q1 = Quaternion.AngleAxis(-sightHalfAngle, transform.up);  // 적의 up벡터를 축으로 왼쪽 방향으로 sightHalfAngle만큼 회전 시키는 회전
         Quaternion q2 = Quaternion.AngleAxis(sightHalfAngle, transform.up);   // 적의 up벡터를 축으로 오른쪽 방향으로 sightHalfAngle만큼 회전 시키는 회전
 
-        Vector3 p1 = q1 * forwardPosition;  // eye 앞쪽 위치를 왼쪽으로 회전
-        Vector3 p2 = q2 * forwardPosition;  // eye 앞쪽 위치를 오른쪽으로 회전
+        Vector3 p1 = q1 * forward;  // eye 앞쪽 위치를 왼쪽으로 회전
+        Vector3 p2 = q2 * forward;  // eye 앞쪽 위치를 오른쪽으로 회전
 
         Handles.DrawLine(eyePosition, eyePosition + p1);  // 눈의 위치에서 회전시킨 위치로 선 긋기
-        Handles.DrawLine(eyePosition, eyePosition + p2);  
+        Handles.DrawLine(eyePosition, eyePosition + p2);
 
         Handles.DrawWireArc(eyePosition, transform.up, p1, sightHalfAngle * 2, sightRange, 3.0f); // 호 그리기
 
