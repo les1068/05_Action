@@ -162,7 +162,10 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget
     private void Start()
     {
         inven = new Inventory(this);    // SceneLoaded보다 나중에 실행되어야 해서 Awake에서 하면 안됨
-        GameManager.Inst.InvenUI.InitializeInventory(inven);
+        if (GameManager.Inst.InvenUI != null)
+        {
+            GameManager.Inst.InvenUI.InitializeInventory(inven);
+        }
     }
 
     /// <summary>

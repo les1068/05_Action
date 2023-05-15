@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using Unity.Mathematics;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Enemy : MonoBehaviour
 {
@@ -148,6 +153,11 @@ public class Enemy : MonoBehaviour
     /// </summary>
     Transform chaseTarget;
 
+    /// <summary>
+    /// 추적 중이면 ture, 아니면 false
+    /// </summary>
+    bool IsChasing => chaseTarget != null;
+
 
     // 컴포넌트 ---------------------------------------
 
@@ -233,6 +243,8 @@ public class Enemy : MonoBehaviour
     bool SearchPlayer()
     {
         bool result = false;
+        chaseTarget = null;
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
         if (colliders.Length > 0)
         {
@@ -267,4 +279,45 @@ public class Enemy : MonoBehaviour
         }
         return result;
     }
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        // 원그리기 : Handles.DrawWireDisc
+
+        // 호 그리기(중심점, 중심축의 벡터, 시작 벡터, 부채꼴의 각도, 반지름, 호의 두께)
+        //Handles.DrawWireArc(transform.position, transform.up, transform.forward, 90.0f, 10.0f, 5.0f);
+
+        Handles.color = Color.green;    // 기본 색은 녹색
+
+        if (IsChasing)
+        {
+            Handles.color = Color.red;  // 시야 범위안에 플레이어가 있으면 빨간색으로 그리기
+        }
+
+        // 원거리 시야 그리기
+        Vector3 eyePosition = transform.position + transform.up * 0.5f;  // 눈의 위치 계산
+
+        Vector3 forwardPosition = transform.forward * sightRange;        // 앞쪽 방향으로 sightRange만큼 나간 위치
+        Handles.DrawDottedLine(eyePosition, eyePosition + forwardPosition, 2.0f);  // eye에서 eye 앞쪽 위치까지 선긋기
+
+        Quaternion q1 = Quaternion.AngleAxis(-sightHalfAngle, transform.up);  // 적의 up벡터를 축으로 왼쪽 방향으로 sightHalfAngle만큼 회전 시키는 회전
+        Quaternion q2 = Quaternion.AngleAxis(sightHalfAngle, transform.up);   // 적의 up벡터를 축으로 오른쪽 방향으로 sightHalfAngle만큼 회전 시키는 회전
+
+        Vector3 p1 = q1 * forwardPosition;  // eye 앞쪽 위치를 왼쪽으로 회전
+        Vector3 p2 = q2 * forwardPosition;  // eye 앞쪽 위치를 오른쪽으로 회전
+
+        Handles.DrawLine(eyePosition, eyePosition + p1);  // 눈의 위치에서 회전시킨 위치로 선 긋기
+        Handles.DrawLine(eyePosition, eyePosition + p2);  
+
+        Handles.DrawWireArc(eyePosition, transform.up, p1, sightHalfAngle * 2, sightRange, 3.0f); // 호 그리기
+
+        Handles.color = Color.yellow;       // 근접 시야 기본 색상
+
+        if (IsChasing)
+        {
+            Handles.color = Color.red;      // 추적 중이면 빨간 색으로 변경
+        }
+        Handles.DrawWireDisc(transform.position, transform.up, closeSightRange, 3.0f); // 근접 시야 그리기
+    }
+#endif
 }
