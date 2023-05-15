@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,30 +29,123 @@ public class Enemy : MonoBehaviour
         Attack,    // 공격 상태
         Die        // 죽은 상태
     }
-    EnemyState state = EnemyState.Wait;
+    EnemyState state = EnemyState.Patrol;
+    EnemyState State
+    {
+        get => state;
+        set
+        {
+            if (state != value)
+            {
+                state = value;
+                switch (state)
+                {
+                    case EnemyState.Wait:
+                        agent.isStopped = true;
+                        agent.velocity = Vector3.zero;
+                        WaitTimer = waitDuration + UnityEngine.Random.Range(0.0f, 0.5f);
+                        anim.SetTrigger("Stop");
+                        StateUpdata = Update_Wait;
+                        break;
 
+                    case EnemyState.Patrol:
+                        agent.isStopped = false;
+                        agent.SetDestination(moveTarget.position);
+                        anim.SetTrigger("Move");
+                        StateUpdata = Updata_Patrol;
+                        break;
+
+                    case EnemyState.Chase:
+                        
+                        break;
+
+                    case EnemyState.Attack:
+                        break;
+
+                    case EnemyState.Die:
+                        break;
+                }
+            }
+        }
+    }
+    Action StateUpdata = null;
+
+
+    // 순찰 관련 데이터 --------------------------------
+
+    /// <summary>
+    /// 순찰할 웨이포인트 모음
+    /// </summary>
     public Waypoints waypoints;
 
+    /// <summary>
+    /// 지금 이동할 목적지
+    /// </summary>
     Transform moveTarget;
 
+    // 대기 관련 데이터 --------------------------------
+
+    /// <summary>
+    /// 목적지에 도달하면 기다리는 시간
+    /// </summary>
+    public float waitDuration = 1.0f;
+
+    /// <summary>
+    /// 실제로 기다린 시간
+    /// </summary>
+    float waitTimer = 0.0f;
+    float WaitTimer
+    {
+        get => waitTimer;
+        set
+        {
+            waitTimer = value;
+            if (waypoints != null && waitTimer < 0.0f)
+            {
+                State = EnemyState.Patrol;
+            }
+        }
+    }
+
+    // 컴포넌트 ---------------------------------------
+
     NavMeshAgent agent;
+    Animator anim;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        waypoints = GetComponentInChildren<Waypoints>();
-        waypoints.transform.SetParent(null);
+        anim = GetComponent<Animator>();
+
+        Waypoints defaultWaypoints = GetComponentInChildren<Waypoints>();
+        defaultWaypoints.transform.SetParent(null);
+        if (waypoints == null)
+        {
+            waypoints = defaultWaypoints;
+        }
     }
+
     private void Start()
     {
         moveTarget = waypoints.Current;
+        State = EnemyState.Wait;
+        anim.ResetTrigger("Stop");
     }
     private void Update()
     {
-        if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        StateUpdata();
+
+    }
+    void Updata_Patrol()
+    {
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             moveTarget = waypoints.Next();
-            agent.SetDestination(moveTarget.position);  
+            State = EnemyState.Wait;
         }
+    }
+    void Update_Wait()
+    {
+        WaitTimer -= Time.deltaTime;
     }
 }

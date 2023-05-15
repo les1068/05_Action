@@ -2049,6 +2049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: {fileID: 0}
+  waitDuration: 1
 --- !u!1001 &2455389670634298878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2059,7 +2060,12 @@ PrefabInstance:
     - target: {fileID: 2455389670236142558, guid: dc53bd75c9f194c41b26b29b5f22dacb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.54
+      value: 10.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2455389670236142558, guid: dc53bd75c9f194c41b26b29b5f22dacb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.51
       objectReference: {fileID: 0}
     - target: {fileID: 2455389670437627728, guid: dc53bd75c9f194c41b26b29b5f22dacb,
         type: 3}
