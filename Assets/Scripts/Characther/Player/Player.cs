@@ -366,6 +366,7 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
             Debug.Log($"{Mathf.Max(0, damage - DefencePower)}만큼의 데미지를 입었습니다");
         }
     }
+    
     /// <summary>
     /// 테스트용
     /// </summary>

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -83,6 +84,10 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                         break;
 
                     case EnemyState.DieState:
+                        agent.isStopped = true;     // 길찾기 정지
+                        agent.velocity = Vector3.zero;
+                        anim.SetTrigger("Die");     // 사망 애니메이션 재생   
+                        StateUpdate = Update_Die;
                         break;
                 }
             }
@@ -190,6 +195,18 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     public Action<float> onHealthChange { get; set; }
     public Action onDie { get; set; }
 
+    // 아이템 드랍 관련 데이터 --------------------------
+    [System.Serializable]
+    public struct ItemDropInfo           // 아이템 드랍 정보
+    {
+        public ItemCode code;            // 드랍할 아이템 종류
+        [Range(0.0f, 1.0f)]
+
+        public float dropPercentage;     // 드랍될 확률 
+    }
+    [Header("드랍 데이터")]
+    public ItemDropInfo[] dropItems;     // 이 슬라임이 죽을 때 드랍할 수 있는 모든 아이템 정보
+
     // 컴포넌트 ---------------------------------------
 
     NavMeshAgent agent;
@@ -270,7 +287,10 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
             State = EnemyState.WaitState;
         }
     }
+    private void Update_Die()
+    {
 
+    }
 
     bool SearchPlayer()
     {
@@ -331,6 +351,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     {
         State = EnemyState.DieState;
         onDie?.Invoke();
+        MakeDropItem();
         Debug.Log($"{this.gameObject.name}이 죽었습니다");
     }
 
@@ -338,7 +359,47 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     {
         // 아무 동작 안함
     }
+    void MakeDropItem()
+    {
+        foreach (var item in dropItems)
+        {
+            if (item.dropPercentage > UnityEngine.Random.value)
+            {
+                ItemFactory.MakeItem(item.code, transform.position, true);
+            }
+        }
+    }
 
+    public void Test_ItemDrop()
+    {
+        MakeDropItem();
+    }
+
+    public void Test_DropCheck(int testCount)
+    {
+        int[] counts = new int[Enum.GetValues(typeof(ItemCode)).Length];
+
+        for (int i = 0; i < testCount; i++)
+        {
+            foreach (var item in dropItems)
+            {
+                if (item.dropPercentage > UnityEngine.Random.value)
+                {
+                    counts[(int)item.code]++;
+                }
+            }
+        }
+
+        int code = 0;
+        foreach (var itemCount in counts)
+        {
+            if (itemCount > 0)
+            {
+                Debug.Log($"{(ItemCode)code} : {itemCount}");
+            }
+            code++;
+        }
+    }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

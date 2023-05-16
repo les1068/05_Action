@@ -2184,6 +2184,19 @@ MonoBehaviour:
   attackPower: 10
   defencePower: 2
   maxHP: 100
+  dropItems:
+  - code: 0
+    dropPercentage: 0.1
+  - code: 1
+    dropPercentage: 0.05
+  - code: 2
+    dropPercentage: 0.01
+  - code: 3
+    dropPercentage: 0.5
+  - code: 4
+    dropPercentage: 0.3
+  - code: 5
+    dropPercentage: 0.1
 --- !u!1001 &2455389670634298878
 PrefabInstance:
   m_ObjectHideFlags: 0
