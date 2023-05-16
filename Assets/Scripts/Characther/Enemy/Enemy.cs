@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -289,7 +286,6 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     }
     private void Update_Die()
     {
-
     }
 
     bool SearchPlayer()
@@ -342,9 +338,9 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     {
         if (State != EnemyState.DieState)
         {
-            anim.SetTrigger("Hit");
-            HP -= Mathf.Max(0, (damage - DefencePower));
             Debug.Log($"{Mathf.Max(1, (damage - DefencePower))}만큼의 데미지를 입었습니다");
+            anim.SetTrigger("Hit");
+            HP -= Mathf.Max(1, (damage - DefencePower));
         }
     }
     public void Die()

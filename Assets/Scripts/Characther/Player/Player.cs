@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -166,10 +167,9 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
     {
         anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
-        playerController.OnItemPickUp += OnItemPickUp;        // 아이템 줍는다는 신호가 들어오면 줍는 처리 실행
+        playerController.OnItemPickUp = OnItemPickUp;        // 아이템 줍는다는 신호가 들어오면 줍는 처리 실행
 
-        dieCamera = GetComponentInChildren<CinemachineVirtualCamera>();
-        dieCamera.gameObject.SetActive(false);
+        dieCamera = GetComponentInChildren<CinemachineVirtualCamera>(true);
 
         partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipType)).Length];// EquipType 갯수만큼 배열 크기 확보
     }
@@ -210,8 +210,10 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
     {
         isAlive = false;
 
+        anim.SetLayerWeight(1, 0.0f);
+        anim.SetTrigger("Die");
+
         dieCamera.gameObject.SetActive(true);
-        
         Debug.Log("플레이어 사망");
         onDie?.Invoke();
     }
@@ -395,8 +397,5 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
         // 아이템 획득 반경 그리기
         Handles.DrawWireDisc(transform.position, Vector3.up, ItemPickupRange);
     }
-
-    
-
 #endif
 }

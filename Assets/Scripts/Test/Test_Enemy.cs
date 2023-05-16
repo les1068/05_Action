@@ -30,4 +30,8 @@ public class Test_Enemy : Test_Base
     {
         enemy.Test_DropCheck(10000);
     }
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        enemy.Defence(40);
+    }
 }
