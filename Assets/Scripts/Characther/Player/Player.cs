@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using Cinemachine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -159,11 +160,16 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
     PlayerController playerController;
 
     Animator anim;
+
+    CinemachineVirtualCamera dieCamera;
     private void Awake()
     {
         anim = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         playerController.OnItemPickUp += OnItemPickUp;        // 아이템 줍는다는 신호가 들어오면 줍는 처리 실행
+
+        dieCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+        dieCamera.gameObject.SetActive(false);
 
         partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipType)).Length];// EquipType 갯수만큼 배열 크기 확보
     }
@@ -203,6 +209,9 @@ public class Player : MonoBehaviour, IHealth, IMana, IEquipTarget,IBattle
     public void Die()
     {
         isAlive = false;
+
+        dieCamera.gameObject.SetActive(true);
+        
         Debug.Log("플레이어 사망");
         onDie?.Invoke();
     }
